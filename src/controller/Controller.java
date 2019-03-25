@@ -382,7 +382,13 @@ public class Controller {
 			{
 				CSVReader lectorJulio = new CSVReader(new FileReader(rutaJulio));
 				String[] lineaJulio = lectorJulio.readNext();
+				lineaJulio = lectorJulio.readNext();
 				int ju=0;
+				xmin = Double.parseDouble(lineaJulio[5]);
+				xmax =  Double.parseDouble(lineaJulio[5]);
+				ymin = Double.parseDouble(lineaJulio[6]);
+				ymax = Double.parseDouble(lineaJulio[6]);
+				
 				while ((lineaJulio = lectorJulio.readNext()) != null) {
 					String obID = lineaJulio[0];
 					int objectID = Integer.parseInt(obID);

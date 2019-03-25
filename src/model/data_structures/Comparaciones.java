@@ -17,7 +17,7 @@ public enum Comparaciones implements Serializable{
 		//TODO Cree y complete el m�todo compare, de acuerdo a la documentaci�n.
 		@Override
 		public int compare(VOMovingViolations o1, VOMovingViolations o2) {
-			int comparacion=o1.darAddressID() - o2.darAddressID();
+			int comparacion=o1.darDireccion().compareTo(o2.darDireccion());
 			if(comparacion<0)
 				return -1;
 			else if(comparacion>0)

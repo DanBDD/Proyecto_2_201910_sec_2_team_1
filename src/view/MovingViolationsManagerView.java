@@ -22,7 +22,7 @@ public class MovingViolationsManagerView
 
 	public void printMenu() {
 		System.out.println("---------ISIS 1206 - Estructuras de datos----------");
-		System.out.println("---------------------Taller 5----------------------");
+		System.out.println("---------------------Proyecto 2----------------------");
 		System.out.println("0. Cargar datos del cuatrimestre");
 //		System.out.println("1. Obtener muestra");
 //		System.out.println("2. Ver datos de la muestra");
