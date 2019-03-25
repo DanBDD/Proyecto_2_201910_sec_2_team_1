@@ -2,7 +2,7 @@
 
 package Tests;
 
-import model.data_structures.BST;
+import model.data_structures.RBBST;
 import model.data_structures.StdOut;
 
 /******************************************************************************
@@ -21,7 +21,7 @@ public class TestBST {
         String test = "S E A R C H E X A M P L E"; 
         String[] keys = test.split(" "); 
         int n = keys.length; 
-        BST<String, Integer> st = new BST<String, Integer>();
+        RBBST<String, Integer> st = new RBBST<String, Integer>();
         for (int i = 0; i < n; i++) 
             st.put(keys[i], i); 
 
@@ -45,14 +45,6 @@ public class TestBST {
             StdOut.println(i + " " + st.select(i)); 
         StdOut.println();
 
-        // test rank, floor, ceiling
-        StdOut.println("key rank floor flor2 ceil");
-        StdOut.println("-------------------------");
-        for (char i = 'A'; i <= 'Z'; i++) {
-            String s = i + "";
-            StdOut.printf("%2s %4d %4s %4s %4s\n", s, st.rank(s), st.floor(s), st.floor2(s), st.ceiling(s));
-        }
-        StdOut.println();
 
         // test range search and range count
         String[] from = { "A", "Z", "X", "0", "B", "C" };
