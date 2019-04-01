@@ -1,10 +1,14 @@
 package controller;
 
+import java.io.FileReader;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+
+import com.opencsv.CSVReader;
+
 import model.vo.*;
 import model.data_structures.*;
 import model.logic.ManejoFechaHora;
@@ -262,11 +266,6 @@ public class Controller {
 			}
 		}
 	}
-
-
-	private MovingViolationsManagerView view;
-	private ArregloDinamico<VOMovingViolations> arreglo;
-
 
 	public void loadMovingViolations(int semestre) {
 		try {
