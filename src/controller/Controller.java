@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -71,9 +72,12 @@ public class Controller {
 	 * Ruta de archivo CSV Diciembre.
 	 */
 	public static final String rutaDiciembre = "./data/Moving_Violations_Issued_in_December_2018.csv";
+	
+	private ArregloDinamico<VOMovingViolations> arreglo;
 	/**
 	 * Metodo constructor
 	 */
+	
 	public Controller()
 	{
 		view = new MovingViolationsManagerView();
@@ -315,8 +319,8 @@ public class Controller {
 					String issueDate = lineaEnero[13];
 					String violationCode = lineaEnero[14];
 					String violationDesc = lineaEnero[15];
-					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
-							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
+//					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+//							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 					enero++;}
 				view.printMessage("Datos de Enero:"+enero);
@@ -359,8 +363,8 @@ public class Controller {
 					String violationCode = lineaFebrero[14];
 					String violationDesc = lineaFebrero[15];
 
-					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
-							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
+//					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+//							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 					f++;}
 				view.printMessage("Datos de febrero:"+f);
@@ -403,8 +407,8 @@ public class Controller {
 					String violationCode = lineaMarzo[14];
 					String violationDesc = lineaMarzo[15];
 
-					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
-							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
+//					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+//							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 					m++;}
 				view.printMessage("Datos de Marzo:"+m);
@@ -446,8 +450,8 @@ public class Controller {
 					String issueDate = lineaAbril[13];
 					String violationCode = lineaAbril[14];
 					String violationDesc = lineaAbril[15];
-					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
-							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));				
+//					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+//							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));				
 					a++;}
 				view.printMessage("Datos de Abril:"+a);
 				lectorAbril.close();
@@ -489,8 +493,8 @@ public class Controller {
 					String violationCode = lineaMayo[14];
 					String violationDesc = lineaMayo[15];
 
-					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
-							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
+//					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+//							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 					mayo++;}
 				view.printMessage("Datos de Mayo:"+mayo);
@@ -533,8 +537,8 @@ public class Controller {
 					String violationCode = lineaJunio[14];
 					String violationDesc = lineaJunio[15];
 
-					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
-							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
+//					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+//							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 					j++;}
 				view.printMessage("Datos de Junio:"+j);
@@ -585,8 +589,8 @@ public class Controller {
 					String violationCode = lineaJulio[14];
 					String violationDesc = lineaJulio[15];
 
-					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
-							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
+//					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+//							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 					ju++;}
 				view.printMessage("Datos de Julio:"+ju);
@@ -629,8 +633,8 @@ public class Controller {
 					String violationCode = lineaAgosto[14];
 					String violationDesc = lineaAgosto[15];
 
-					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
-							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
+//					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+//							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 					ag++;}
 				view.printMessage("Datos de Agosto:"+ag);
@@ -673,8 +677,8 @@ public class Controller {
 					String violationCode = lineaSeptiembre[14];
 					String violationDesc = lineaSeptiembre[15];
 
-					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
-							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
+//					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+//							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 					s++;}
 				view.printMessage("Datos de Septiembre:"+s);
@@ -717,8 +721,8 @@ public class Controller {
 					String violationCode = lineaOctubre[15];
 					String violationDesc = lineaOctubre[16];
 
-					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
-							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
+//					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+//							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 					o++;}
 				view.printMessage("Datos de Octubre:"+o);
@@ -761,8 +765,8 @@ public class Controller {
 					String violationCode = lineaNoviembre[15];
 					String violationDesc = lineaNoviembre[16];
 
-					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
-							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
+//					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+//							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 					n++;}
 				view.printMessage("Datos de Noviembre:"+n);
@@ -805,8 +809,8 @@ public class Controller {
 					String violationCode = lineaDiciembre[15];
 					String violationDesc = lineaDiciembre[16];
 
-					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
-							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
+//					arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
+//							totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
 
 					d++;}
 				view.printMessage("Datos de Diciembre:"+d);

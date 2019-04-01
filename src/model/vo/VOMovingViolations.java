@@ -5,6 +5,25 @@ package model.vo;
  */
 public class VOMovingViolations {
 
+	private int objectID;
+	private int totalPaid;
+	private String location;
+	private String date;
+	private String accidentIndicator;
+	private String violationDesc;
+	private String streetSegID;
+	private String addressID;
+	
+	public VOMovingViolations(int pObID, int ptotalPaid, String pLoc, String pDate, String pAccident, String pDesc, String pstreetID, String paddID) {
+		objectID = pObID;
+		totalPaid = ptotalPaid;
+		location = pLoc;
+		date = pDate;
+		accidentIndicator = pAccident;
+		violationDesc = pDesc;
+		streetSegID = pstreetID;
+		addressID = paddID;
+	}
 	
 	@Override
 	public String toString() {
@@ -20,8 +39,8 @@ public class VOMovingViolations {
 	 * @return id - Identificador único de la infracción
 	 */
 	public int objectId() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return objectID;
 	}	
 	
 	
@@ -29,47 +48,47 @@ public class VOMovingViolations {
 	 * @return location - Dirección en formato de texto.
 	 */
 	public String getLocation() {
-		// TODO Auto-generated method stub
-		return "";
+		
+		return location;
 	}
 
 	/**
 	 * @return date - Fecha cuando se puso la infracción .
 	 */
 	public String getTicketIssueDate() {
-		// TODO Auto-generated method stub
-		return "";
+		
+		return date;
 	}
 	
 	/**
 	 * @return totalPaid - Cuanto dinero efectivamente pagó el que recibió la infracción en USD.
 	 */
 	public int getTotalPaid() {
-		// TODO Auto-generated method stub
-		return 0;
+
+		return totalPaid;
 	}
 	
 	/**
 	 * @return accidentIndicator - Si hubo un accidente o no.
 	 */
 	public String  getAccidentIndicator() {
-		// TODO Auto-generated method stub
-		return "";
+		
+		return accidentIndicator;
 	}
 		
 	/**
 	 * @return description - Descripción textual de la infracción.
 	 */
 	public String  getViolationDescription() {
-		// TODO Auto-generated method stub
-		return "";
+
+		return violationDesc;
 	}
 	
 	public String getStreetSegId() {
-		return "";
+		return streetSegID;
 	}
 	
 	public String getAddressId() {
-		return "";
+		return addressID;
 	}
 }
