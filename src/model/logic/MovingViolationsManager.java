@@ -142,7 +142,7 @@ public class MovingViolationsManager {
 		EstadisticasCargaInfracciones estadistica = null;
 		try{
 			if(numeroSemestre ==2){
-				
+
 				for(int i = 0;i<sem2.length;i++){
 					contMes = 0;
 					String mes = sem2[i];
@@ -150,7 +150,7 @@ public class MovingViolationsManager {
 					String[] linea = lector.readNext();
 					linea=lector.readNext();
 					while ((linea = lector.readNext()) != null) {
-						
+
 						String obID = linea[0];
 						String location = linea[2];
 						int objectID = Integer.parseInt(obID);
@@ -176,25 +176,25 @@ public class MovingViolationsManager {
 						totalNuevo2++;
 						contMes++;
 						if(i == 0){
-							contMes = ju;
+							ju=contMes;
 						}
 						else if(i == 1){
-							contMes = ag;
+							ag=contMes;
 						}
 						else if(i == 2){
-							contMes = s;
+							s=contMes;
 
 						}
 						else if(i == 3){
-							contMes = o;
+							o=contMes;
 
 						}
 						else if(i == 4){
-							contMes = n;
+							n=contMes;
 
 						}
 						else if(i == 5){
-							contMes = d;
+							d=contMes;
 
 						}
 					}
@@ -211,7 +211,7 @@ public class MovingViolationsManager {
 					String[] linea = lector.readNext();
 					linea=lector.readNext();
 					while ((linea = lector.readNext()) != null) {
-						
+
 						String obID = linea[0];
 						String location = linea[2];
 						int objectID = Integer.parseInt(obID);
@@ -237,25 +237,25 @@ public class MovingViolationsManager {
 						totalNuevo1++;
 						contMes++;
 						if(i == 0){
-							contMes = enero;
+							enero=contMes;
 						}
 						else if(i == 1){
-							contMes = f;
+							f=contMes;
 						}
 						else if(i == 2){
-							contMes = m;
+							m=contMes;
 
 						}
 						else if(i == 3){
-							contMes = a;
+							a=contMes;
 
 						}
 						else if(i == 4){
-							contMes = mayo;
+							mayo=contMes;
 
 						}
 						else if(i == 5){
-							contMes = j;
+							j=contMes;
 
 						}
 					}
@@ -270,530 +270,13 @@ public class MovingViolationsManager {
 
 			e.printStackTrace();
 		}
-			//			if(numeroSemestre ==1){
-			//				CSVReader lectorEnero = new CSVReader(new FileReader(rutaEnero));
-			//				String[] lineaEnero = lectorEnero.readNext();
-			//				lineaEnero=lectorEnero.readNext();
-			//				xmin=Double.parseDouble(lineaEnero[5]);
-			//				xmax=Double.parseDouble(lineaEnero[5]);
-			//				ymin=Double.parseDouble(lineaEnero[6]);
-			//				ymax=Double.parseDouble(lineaEnero[6]);
-			//				while ((lineaEnero = lectorEnero.readNext()) != null) {
-			//					String obID = lineaEnero[0];
-			//					String location = lineaEnero[2];
-			//					int objectID = Integer.parseInt(obID);
-			//					double x=Double.parseDouble(lineaEnero[5]);
-			//					double y=Double.parseDouble(lineaEnero[6]);
-			//					if(x<xmin)
-			//						xmin=x;
-			//					else if(x>xmax)
-			//						xmax=x;
-			//					if(y<ymin)
-			//						ymin=y;
-			//					else if(y>ymax)
-			//						ymax=y;
-			//					String address = lineaEnero[3];
-			//					String streetSegID = lineaEnero[4];
-			//					String total = lineaEnero[9];
-			//					int totalPaid = Integer.parseInt(total);
-			//					String accidentIndicator = lineaEnero[12];
-			//					String issueDate = lineaEnero[13];
-			//					String violationDesc = lineaEnero[15];
-			//					arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address));
-			//					tot++;
-			//					enero++;}
-			//				System.out.println("Datos de Enero:"+enero);
-			//				lectorEnero.close();
-			//
-			//				CSVReader lectorFebrero = new CSVReader(new FileReader(rutaFebrero));
-			//				String[] lineaFebrero = lectorFebrero.readNext();
-			//				while ((lineaFebrero = lectorFebrero.readNext()) != null) {
-			//					String obID = lineaFebrero[0];
-			//					int objectID = Integer.parseInt(obID);
-			//					double x=Double.parseDouble(lineaFebrero[5]);
-			//					double y=Double.parseDouble(lineaFebrero[6]);
-			//					if(x<xmin)
-			//						xmin=x;
-			//					else if(x>xmax)
-			//						xmax=x;
-			//					if(y<ymin)
-			//						ymin=y;
-			//					else if(y>ymax)
-			//						ymax=y;
-			//					String address = lineaFebrero[3];
-			//					String streetSegID = lineaFebrero[4];
-			//					String fine = lineaFebrero[8];
-			//					int fineAmt = Integer.parseInt(fine);
-			//					String total = lineaFebrero[9];
-			//					int totalPaid = Integer.parseInt(total);
-			//					String p1 = lineaFebrero[10];
-			//					int penalty1 = Integer.parseInt(p1);
-			//					String p2 = lineaFebrero[11];
-			//					int penalty2 = 0;
-			//					if(!p2.equals("")){
-			//						penalty2 = Integer.parseInt(p2);
-			//					}
-			//					else{
-			//						penalty2 = 0;
-			//					}
-			//					String accidentIndicator = lineaFebrero[12];
-			//					String issueDate = lineaFebrero[13];
-			//					String violationCode = lineaFebrero[14];
-			//					String violationDesc = lineaFebrero[15];
-			//					arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address));
-			//					tot++;
-			//					f++;}
-			//				System.out.println("Datos de Enero:"+f);
-			//				lectorFebrero.close();
-			//
-			//				CSVReader lectorMarzo = new CSVReader(new FileReader(rutaMarzo));
-			//				String[] lineaMarzo = lectorMarzo.readNext();
-			//				while ((lineaMarzo = lectorMarzo.readNext()) != null) {
-			//					String obID = lineaMarzo[0];
-			//					int objectID = Integer.parseInt(obID);
-			//					double x=Double.parseDouble(lineaMarzo[5]);
-			//					double y=Double.parseDouble(lineaMarzo[6]);
-			//					if(x<xmin)
-			//						xmin=x;
-			//					else if(x>xmax)
-			//						xmax=x;
-			//					if(y<ymin)
-			//						ymin=y;
-			//					else if(y>ymax)
-			//						ymax=y;
-			//					String address = lineaMarzo[3];
-			//					String streetSegID = lineaMarzo[4];
-			//					String fine = lineaMarzo[8];
-			//					int fineAmt = Integer.parseInt(fine);
-			//					String total = lineaMarzo[9];
-			//					int totalPaid = Integer.parseInt(total);
-			//					String p1 = lineaMarzo[10];
-			//					int penalty1 = Integer.parseInt(p1);
-			//					String p2 = lineaMarzo[11];
-			//					int penalty2 = 0;
-			//					if(!p2.equals("")){
-			//						penalty2 = Integer.parseInt(p2);
-			//					}
-			//					else{
-			//						penalty2 = 0;
-			//					}
-			//					String accidentIndicator = lineaMarzo[12];
-			//					String issueDate = lineaMarzo[13];
-			//					String violationCode = lineaMarzo[14];
-			//					String violationDesc = lineaMarzo[15];
-			//
-			//					arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address));
-			//					tot++;
-			//					m++;}
-			//				System.out.println("Datos de Enero:"+m);
-			//				lectorMarzo.close();
-			//
-			//				CSVReader lectorAbril = new CSVReader(new FileReader(rutaAbril));
-			//				String[] lineaAbril = lectorAbril.readNext();
-			//				while ((lineaAbril = lectorAbril.readNext()) != null) {
-			//					String obID = lineaAbril[0];
-			//					int objectID = Integer.parseInt(obID);
-			//					double x=Double.parseDouble(lineaAbril[5]);
-			//					double y=Double.parseDouble(lineaAbril[6]);
-			//					if(x<xmin)
-			//						xmin=x;
-			//					else if(x>xmax)
-			//						xmax=x;
-			//					if(y<ymin)
-			//						ymin=y;
-			//					else if(y>ymax)
-			//						ymax=y;
-			//					String address = lineaAbril[3];
-			//					String streetSegID = lineaAbril[4];
-			//					String fine = lineaAbril[8];
-			//					int fineAmt = Integer.parseInt(fine);
-			//					String total = lineaAbril[9];
-			//					int totalPaid = Integer.parseInt(total);
-			//					String p1 = lineaAbril[10];
-			//					int penalty1 = Integer.parseInt(p1);
-			//					String p2 = lineaAbril[11];
-			//					int penalty2 = 0;
-			//					if(!p2.equals("")){
-			//						penalty2 = Integer.parseInt(p2);
-			//					}
-			//					else{
-			//						penalty2 = 0;
-			//					}
-			//					String accidentIndicator = lineaAbril[12];
-			//					String issueDate = lineaAbril[13];
-			//					String violationCode = lineaAbril[14];
-			//					String violationDesc = lineaAbril[15];
-			//					arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address));					totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));	
-			//					tot++;
-			//					a++;}
-			//				System.out.println("Datos de Enero:"+a);
-			//				lectorAbril.close();
-			//
-			//				CSVReader lectorMayo = new CSVReader(new FileReader(rutaMayo));
-			//				String[] lineaMayo = lectorMayo.readNext();
-			//				while ((lineaMayo = lectorMayo.readNext()) != null) {
-			//					String obID = lineaMayo[0];
-			//					int objectID = Integer.parseInt(obID);
-			//					double x=Double.parseDouble(lineaMayo[5]);
-			//					double y=Double.parseDouble(lineaMayo[6]);
-			//					if(x<xmin)
-			//						xmin=x;
-			//					else if(x>xmax)
-			//						xmax=x;
-			//					if(y<ymin)
-			//						ymin=y;
-			//					else if(y>ymax)
-			//						ymax=y;
-			//					String address = lineaMayo[3];
-			//					String streetSegID = lineaMayo[4];
-			//					String fine = lineaMayo[8];
-			//					int fineAmt = Integer.parseInt(fine);
-			//					String total = lineaMayo[9];
-			//					int totalPaid =(int) Double.parseDouble(total);
-			//					String p1 = lineaMayo[10];
-			//					int penalty1 = Integer.parseInt(p1);
-			//					String p2 = lineaMayo[11];
-			//					int penalty2 = 0;
-			//					if(!p2.equals("")){
-			//						penalty2 = Integer.parseInt(p2);
-			//					}
-			//					else{
-			//						penalty2 = 0;
-			//					}
-			//					String accidentIndicator = lineaMayo[12];
-			//					String issueDate = lineaMayo[13];
-			//					String violationCode = lineaMayo[14];
-			//					String violationDesc = lineaMayo[15];
-			//
-			//					arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address));					totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-			//					tot++;
-			//					mayo++;}
-			//				System.out.println("Datos de Enero:"+mayo);
-			//				lectorMayo.close();
-			//
-			//				CSVReader lectorJunio = new CSVReader(new FileReader(rutaJunio));
-			//				String[] lineaJunio = lectorJunio.readNext();
-			//				while ((lineaJunio = lectorJunio.readNext()) != null) {
-			//					String obID = lineaJunio[0];
-			//					int objectID = Integer.parseInt(obID);
-			//					double x=Double.parseDouble(lineaJunio[5]);
-			//					double y=Double.parseDouble(lineaJunio[6]);
-			//					if(x<xmin)
-			//						xmin=x;
-			//					else if(x>xmax)
-			//						xmax=x;
-			//					if(y<ymin)
-			//						ymin=y;
-			//					else if(y>ymax)
-			//						ymax=y;
-			//					String address = lineaJunio[3];
-			//					String streetSegID = lineaJunio[4];
-			//					String fine = lineaJunio[8];
-			//					int fineAmt = Integer.parseInt(fine);
-			//					String total = lineaJunio[9];
-			//					int totalPaid =(int) Double.parseDouble(total);
-			//					String p1 = lineaJunio[10];
-			//					int penalty1 = Integer.parseInt(p1);
-			//					String p2 = lineaJunio[11];
-			//					int penalty2 = 0;
-			//					if(!p2.equals("")){
-			//						penalty2 = Integer.parseInt(p2);
-			//					}
-			//					else{
-			//						penalty2 = 0;
-			//					}
-			//					String accidentIndicator = lineaJunio[12];
-			//					String issueDate = lineaJunio[13];
-			//					String violationCode = lineaJunio[14];
-			//					String violationDesc = lineaJunio[15];
-			//
-			//					arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address));					totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-			//					tot++;
-			//					j++;
-			//				}
-			//				System.out.println("Datos de Enero:"+j);
-			//				lectorJunio.close();
-			//				estadistica = new EstadisticasCargaInfracciones(tot, enero, f, m, a ,mayo, j, xmin, ymin,xmax,ymax);
-			//			}
-			//
-			//			else
-			//			{
-			//				CSVReader lectorJulio = new CSVReader(new FileReader(rutaJulio));
-			//				String[] lineaJulio = lectorJulio.readNext();
-			//				lineaJulio = lectorJulio.readNext();
-			//				xmin = Double.parseDouble(lineaJulio[5]);
-			//				xmax =  Double.parseDouble(lineaJulio[5]);
-			//				ymin = Double.parseDouble(lineaJulio[6]);
-			//				ymax = Double.parseDouble(lineaJulio[6]);
-			//
-			//				while ((lineaJulio = lectorJulio.readNext()) != null) {
-			//					String obID = lineaJulio[0];
-			//					int objectID = Integer.parseInt(obID);
-			//					double x=Double.parseDouble(lineaJulio[5]);
-			//					double y=Double.parseDouble(lineaJulio[6]);
-			//					if(x<xmin)
-			//						xmin=x;
-			//					else if(x>xmax)
-			//						xmax=x;
-			//					if(y<ymin)
-			//						ymin=y;
-			//					else if(y>ymax)
-			//						ymax=y;
-			//					String address = lineaJulio[3];
-			//					String streetSegID = lineaJulio[4];
-			//					String fine = lineaJulio[8];
-			//					int fineAmt = Integer.parseInt(fine);
-			//					String total = lineaJulio[9];
-			//					int totalPaid =(int) Double.parseDouble(total);
-			//					String p1 = lineaJulio[10];
-			//					int penalty1 = Integer.parseInt(p1);
-			//					String p2 = lineaJulio[11];
-			//					int penalty2 = 0;
-			//					if(!p2.equals("")){
-			//						penalty2 = Integer.parseInt(p2);
-			//					}
-			//					else{
-			//						penalty2 = 0;
-			//					}
-			//					String accidentIndicator = lineaJulio[12];
-			//					String issueDate = lineaJulio[13];
-			//					String violationCode = lineaJulio[14];
-			//					String violationDesc = lineaJulio[15];
-			//
-			//					arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address));					totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-			//					tot++;
-			//					ju++;}
-			//				System.out.println("Datos de Enero:"+ju);
-			//				lectorJulio.close();
-			//
-			//				CSVReader lectorAgosto = new CSVReader(new FileReader(rutaAgosto));
-			//				String[] lineaAgosto = lectorAgosto.readNext();
-			//				while ((lineaAgosto = lectorAgosto.readNext()) != null) {
-			//					String obID = lineaAgosto[0];
-			//					int objectID = Integer.parseInt(obID);
-			//					double x=Double.parseDouble(lineaAgosto[5]);
-			//					double y=Double.parseDouble(lineaAgosto[6]);
-			//					if(x<xmin)
-			//						xmin=x;
-			//					else if(x>xmax)
-			//						xmax=x;
-			//					if(y<ymin)
-			//						ymin=y;
-			//					else if(y>ymax)
-			//						ymax=y;
-			//					String address = lineaAgosto[3];
-			//					String streetSegID = lineaAgosto[4];
-			//					String fine = lineaAgosto[8];
-			//					int fineAmt = Integer.parseInt(fine);
-			//					String total = lineaAgosto[9];
-			//					int totalPaid =(int) Double.parseDouble(total);
-			//					String p1 = lineaAgosto[10];
-			//					int penalty1 = Integer.parseInt(p1);
-			//					String p2 = lineaAgosto[11];
-			//					int penalty2 = 0;
-			//					if(!p2.equals("")){
-			//						penalty2 = Integer.parseInt(p2);
-			//					}
-			//					else{
-			//						penalty2 = 0;
-			//					}
-			//					String accidentIndicator = lineaAgosto[12];
-			//					String issueDate = lineaAgosto[13];
-			//					String violationCode = lineaAgosto[14];
-			//					String violationDesc = lineaAgosto[15];
-			//
-			//					arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address));					totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-			//					tot++;
-			//					ag++;}
-			//				System.out.println("Datos de Enero:"+ag);
-			//				lectorAgosto.close();
-			//
-			//				CSVReader lectorSeptiembre = new CSVReader(new FileReader(rutaSeptiembre));
-			//				String[] lineaSeptiembre = lectorSeptiembre.readNext();
-			//				while ((lineaSeptiembre = lectorSeptiembre.readNext()) != null) {
-			//					String obID = lineaSeptiembre[0];
-			//					int objectID = Integer.parseInt(obID);
-			//					double x=Double.parseDouble(lineaSeptiembre[5]);
-			//					double y=Double.parseDouble(lineaSeptiembre[6]);
-			//					if(x<xmin)
-			//						xmin=x;
-			//					else if(x>xmax)
-			//						xmax=x;
-			//					if(y<ymin)
-			//						ymin=y;
-			//					else if(y>ymax)
-			//						ymax=y;
-			//					String address = lineaSeptiembre[3];
-			//					String streetSegID = lineaSeptiembre[4];
-			//					String fine = lineaSeptiembre[8];
-			//					int fineAmt = Integer.parseInt(fine);
-			//					String total = lineaSeptiembre[9];
-			//					int totalPaid = Integer.parseInt(total);
-			//					String p1 = lineaSeptiembre[10];
-			//					int penalty1 = Integer.parseInt(p1);
-			//					String p2 = lineaSeptiembre[11];
-			//					int penalty2 = 0;
-			//					if(!p2.equals("")){
-			//						penalty2 = Integer.parseInt(p2);
-			//					}
-			//					else{
-			//						penalty2 = 0;
-			//					}
-			//					String accidentIndicator = lineaSeptiembre[12];
-			//					String issueDate = lineaSeptiembre[13];
-			//					String violationCode = lineaSeptiembre[14];
-			//					String violationDesc = lineaSeptiembre[15];
-			//
-			//					arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address));						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-			//					tot++;
-			//					s++;}
-			//				System.out.println("Datos de Enero:"+s);
-			//				lectorSeptiembre.close();
-			//
-			//				CSVReader lectorOctubre = new CSVReader(new FileReader(rutaOctubre));
-			//				String[] lineaOctubre = lectorOctubre.readNext();
-			//				while ((lineaOctubre = lectorOctubre.readNext()) != null) {
-			//					String obID = lineaOctubre[0];
-			//					int objectID = Integer.parseInt(obID);
-			//					double x=Double.parseDouble(lineaOctubre[5]);
-			//					double y=Double.parseDouble(lineaOctubre[6]);
-			//					if(x<xmin)
-			//						xmin=x;
-			//					else if(x>xmax)
-			//						xmax=x;
-			//					if(y<ymin)
-			//						ymin=y;
-			//					else if(y>ymax)
-			//						ymax=y;
-			//					String address = lineaOctubre[3];
-			//					String streetSegID = lineaOctubre[4];
-			//					String fine = lineaOctubre[8];
-			//					int fineAmt = Integer.parseInt(fine);
-			//					String total = lineaOctubre[9];
-			//					int totalPaid = Integer.parseInt(total);
-			//					String p1 = lineaOctubre[10];
-			//					int penalty1 = Integer.parseInt(p1);
-			//					String p2 = lineaOctubre[11];
-			//					int penalty2 = 0;
-			//					if(!p2.equals("")){
-			//						penalty2 = Integer.parseInt(p2);
-			//					}
-			//					else{
-			//						penalty2 = 0;
-			//					}
-			//					String accidentIndicator = lineaOctubre[12];
-			//					String issueDate = lineaOctubre[14];
-			//					String violationCode = lineaOctubre[15];
-			//					String violationDesc = lineaOctubre[16];
-			//
-			//					arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address));						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-			//					tot++;
-			//					o++;}
-			//				System.out.println("Datos de Enero:"+o);
-			//				lectorOctubre.close();
-			//
-			//				CSVReader lectorNoviembre = new CSVReader(new FileReader(rutaNoviembre));
-			//				String[] lineaNoviembre = lectorNoviembre.readNext();
-			//				while ((lineaNoviembre = lectorNoviembre.readNext()) != null) {
-			//					String obID = lineaNoviembre[0];
-			//					int objectID = Integer.parseInt(obID);
-			//					double x=Double.parseDouble(lineaNoviembre[5]);
-			//					double y=Double.parseDouble(lineaNoviembre[6]);
-			//					if(x<xmin)
-			//						xmin=x;
-			//					else if(x>xmax)
-			//						xmax=x;
-			//					if(y<ymin)
-			//						ymin=y;
-			//					else if(y>ymax)
-			//						ymax=y;
-			//					String address = lineaNoviembre[3];
-			//					String streetSegID = lineaNoviembre[4];
-			//					String fine = lineaNoviembre[8];
-			//					int fineAmt = Integer.parseInt(fine);
-			//					String total = lineaNoviembre[9];
-			//					int totalPaid = Integer.parseInt(total);
-			//					String p1 = lineaNoviembre[10];
-			//					int penalty1 = Integer.parseInt(p1);
-			//					String p2 = lineaNoviembre[11];
-			//					int penalty2 = 0;
-			//					if(!p2.equals("")){
-			//						penalty2 = Integer.parseInt(p2);
-			//					}
-			//					else{
-			//						penalty2 = 0;
-			//					}
-			//					String accidentIndicator = lineaNoviembre[12];
-			//					String issueDate = lineaNoviembre[14];
-			//					String violationCode = lineaNoviembre[15];
-			//					String violationDesc = lineaNoviembre[16];
-			//
-			//					arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address));					totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-			//					tot++;
-			//					n++;}
-			//				System.out.println("Datos de Enero:"+n);
-			//				lectorNoviembre.close();
-			//
-			//				CSVReader lectorDiciembre = new CSVReader(new FileReader(rutaDiciembre));
-			//				String[] lineaDiciembre = lectorDiciembre.readNext();
-			//				while ((lineaDiciembre = lectorDiciembre.readNext()) != null) {
-			//					String obID = lineaDiciembre[0];
-			//					int objectID = Integer.parseInt(obID);
-			//					double x=Double.parseDouble(lineaDiciembre[5]);
-			//					double y=Double.parseDouble(lineaDiciembre[6]);
-			//					if(x<xmin)
-			//						xmin=x;
-			//					else if(x>xmax)
-			//						xmax=x;
-			//					if(y<ymin)
-			//						ymin=y;
-			//					else if(y>ymax)
-			//						ymax=y;
-			//					String address = lineaDiciembre[3];
-			//					String streetSegID = lineaDiciembre[4];
-			//					String fine = lineaDiciembre[8];
-			//					int fineAmt = Integer.parseInt(fine);
-			//					String total = lineaDiciembre[9];
-			//					int totalPaid = Integer.parseInt(total);
-			//					String p1 = lineaDiciembre[10];
-			//					int penalty1 = Integer.parseInt(p1);
-			//					String p2 = lineaDiciembre[11];
-			//					int penalty2 = 0;
-			//					if(!p2.equals("")){
-			//						penalty2 = Integer.parseInt(p2);
-			//					}
-			//					else{
-			//						penalty2 = 0;
-			//					}
-			//					String accidentIndicator = lineaDiciembre[12];
-			//					String issueDate = lineaDiciembre[14];
-			//					String violationCode = lineaDiciembre[15];
-			//					String violationDesc = lineaDiciembre[16];
-			//
-			//					arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address));						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-			//					tot++;
-			//					d++;}
-			//				System.out.println("Datos de Enero:"+d);
-			//				lectorDiciembre.close();
-			//				estadistica = new EstadisticasCargaInfracciones(tot, ju, ag, s, o ,n, d, xmin, ymin,xmax,ymax);
-			//			}
-
-
-//
-//		} catch (IOException e) {
-//
-//			e.printStackTrace();
-//		}
-
 		return estadistica;
-
-
 	}
 
 	/**
 	 * Requerimiento 1A: Obtener el ranking de las N franjas horarias
-	 * que tengan más infracciones. 
-	 * @param int N: Número de franjas horarias que tienen más infracciones
+	 * que tengan mï¿½s infracciones. 
+	 * @param int N: Nï¿½mero de franjas horarias que tienen mï¿½s infracciones
 	 * @return Cola con objetos InfraccionesFranjaHoraria
 	 */
 	public IQueue<InfraccionesFranjaHoraria> rankingNFranjas(int N)
@@ -804,9 +287,9 @@ public class MovingViolationsManager {
 
 	/**
 	 * Requerimiento 2A: Consultar  las  infracciones  por
-	 * Localización  Geográfica  (Xcoord, Ycoord) en Tabla Hash.
-	 * @param  double xCoord : Coordenada X de la localizacion de la infracción
-	 *			double yCoord : Coordenada Y de la localizacion de la infracción
+	 * Localizaciï¿½n  Geogrï¿½fica  (Xcoord, Ycoord) en Tabla Hash.
+	 * @param  double xCoord : Coordenada X de la localizacion de la infracciï¿½n
+	 *			double yCoord : Coordenada Y de la localizacion de la infracciï¿½n
 	 * @return Objeto InfraccionesLocalizacion
 	 */
 	public InfraccionesLocalizacion consultarPorLocalizacionHash(double xCoord, double yCoord)
@@ -817,8 +300,8 @@ public class MovingViolationsManager {
 
 	/**
 	 * Requerimiento 3A: Buscar las infracciones por rango de fechas
-	 * @param  LocalDate fechaInicial: Fecha inicial del rango de búsqueda
-	 * 		LocalDate fechaFinal: Fecha final del rango de búsqueda
+	 * @param  LocalDate fechaInicial: Fecha inicial del rango de bï¿½squeda
+	 * 		LocalDate fechaFinal: Fecha final del rango de bï¿½squeda
 	 * @return Cola con objetos InfraccionesFecha
 	 */
 	public IQueue<InfraccionesFecha> consultarInfraccionesPorRangoFechas(LocalDate fechaInicial, LocalDate fechaFinal)
@@ -828,9 +311,9 @@ public class MovingViolationsManager {
 	}
 
 	/**
-	 * Requerimiento 1B: Obtener  el  ranking  de  las  N  tipos  de  infracción
-	 * (ViolationCode)  que  tengan  más infracciones.
-	 * @param  int N: Numero de los tipos de ViolationCode con más infracciones.
+	 * Requerimiento 1B: Obtener  el  ranking  de  las  N  tipos  de  infracciï¿½n
+	 * (ViolationCode)  que  tengan  mï¿½s infracciones.
+	 * @param  int N: Numero de los tipos de ViolationCode con mï¿½s infracciones.
 	 * @return Cola con objetos InfraccionesViolationCode con top N infracciones
 	 */
 	public IQueue<InfraccionesViolationCode> rankingNViolationCodes(int N)
@@ -842,9 +325,9 @@ public class MovingViolationsManager {
 
 	/**
 	 * Requerimiento 2B: Consultar las  infracciones  por  
-	 * Localización  Geográfica  (Xcoord, Ycoord) en Arbol.
-	 * @param  double xCoord : Coordenada X de la localizacion de la infracción
-	 *			double yCoord : Coordenada Y de la localizacion de la infracción
+	 * Localizaciï¿½n  Geogrï¿½fica  (Xcoord, Ycoord) en Arbol.
+	 * @param  double xCoord : Coordenada X de la localizacion de la infracciï¿½n
+	 *			double yCoord : Coordenada Y de la localizacion de la infracciï¿½n
 	 * @return Objeto InfraccionesLocalizacion
 	 */
 	public InfraccionesLocalizacion consultarPorLocalizacionArbol(double xCoord, double yCoord)
@@ -856,8 +339,8 @@ public class MovingViolationsManager {
 	/**
 	 * Requerimiento 3B: Buscar las franjas de fecha-hora donde se tiene un valor acumulado
 	 * de infracciones en un rango dado [US$ valor inicial, US$ valor final]. 
-	 * @param  double valorInicial: Valor mínimo acumulado de las infracciones
-	 * 		double valorFinal: Valor máximo acumulado de las infracciones.
+	 * @param  double valorInicial: Valor mï¿½nimo acumulado de las infracciones
+	 * 		double valorFinal: Valor mï¿½ximo acumulado de las infracciones.
 	 * @return Cola con objetos InfraccionesFechaHora
 	 */
 	public IQueue<InfraccionesFechaHora> consultarFranjasAcumuladoEnRango(double valorInicial, double valorFinal)
@@ -867,8 +350,8 @@ public class MovingViolationsManager {
 	}
 
 	/**
-	 * Requerimiento 1C: Obtener  la información de  una  addressId dada
-	 * @param  int addressID: Localización de la consulta.
+	 * Requerimiento 1C: Obtener  la informaciï¿½n de  una  addressId dada
+	 * @param  int addressID: Localizaciï¿½n de la consulta.
 	 * @return Objeto InfraccionesLocalizacion
 	 */
 	public InfraccionesLocalizacion consultarPorAddressId(int addressID)
@@ -880,8 +363,8 @@ public class MovingViolationsManager {
 	/**
 	 * Requerimiento 2C: Obtener  las infracciones  en  un  rango de
 	 * horas  [HH:MM:SS  inicial,HH:MM:SS  final]
-	 * @param  LocalTime horaInicial: Hora  inicial del rango de búsqueda
-	 * 		LocalTime horaFinal: Hora final del rango de búsqueda
+	 * @param  LocalTime horaInicial: Hora  inicial del rango de bï¿½squeda
+	 * 		LocalTime horaFinal: Hora final del rango de bï¿½squeda
 	 * @return Objeto InfraccionesFranjaHorariaViolationCode
 	 */
 	public InfraccionesFranjaHorariaViolationCode consultarPorRangoHoras(LocalTime horaInicial, LocalTime horaFinal)
@@ -891,9 +374,9 @@ public class MovingViolationsManager {
 	}
 
 	/**
-	 * Requerimiento 3C: Obtener  el  ranking  de  las  N localizaciones geográficas
+	 * Requerimiento 3C: Obtener  el  ranking  de  las  N localizaciones geogrï¿½ficas
 	 * (Xcoord,  Ycoord)  con  la mayor  cantidad  de  infracciones.
-	 * @param  int N: Numero de las localizaciones con mayor número de infracciones
+	 * @param  int N: Numero de las localizaciones con mayor nï¿½mero de infracciones
 	 * @return Cola de objetos InfraccionesLocalizacion
 	 */
 	public IQueue<InfraccionesLocalizacion> rankingNLocalizaciones(int N)
@@ -903,7 +386,7 @@ public class MovingViolationsManager {
 	}
 
 	/**
-	 * Requerimiento 4C: Obtener la  información  de  los códigos (ViolationCode) ordenados por su numero de infracciones.
+	 * Requerimiento 4C: Obtener la  informaciï¿½n  de  los cï¿½digos (ViolationCode) ordenados por su numero de infracciones.
 	 * @return Contenedora de objetos InfraccionesViolationCode.
 	  // TODO Definir la estructura Contenedora
 	 */

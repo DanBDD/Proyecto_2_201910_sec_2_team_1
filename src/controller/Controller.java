@@ -63,14 +63,14 @@ public class Controller {
 
 				//TODO Mostrar resultado de tipo EstadisticasCargaInfracciones con: 
 				//     total de infracciones cargadas, numero de infracciones cargadas por mes y zona Minimax (Xmin, Ymin) y (Xmax, Ymax)
-				//view.printResumenLoadMovingViolations( ... );
+				view.printResumenLoadMovingViolations(resumenCarga);
 				break;
 
 			case 1:
 				view.printMessage("1A. Consultar las N franjas horarias con mas infracciones que desea ver. Ingresar valor de N: ");
 				int numeroFranjas = sc.nextInt();
 
-				//TODO Completar para la invocación del metodo 1A
+				//TODO Completar para la invocaciï¿½n del metodo 1A
 				//model.rankingNFranjas(int N)
 				
 				//TODO Mostrar resultado de tipo Cola con N InfraccionesFranjaHoraria
@@ -83,7 +83,7 @@ public class Controller {
 				view.printMessage("Ingrese la coordenada en Y de la localizacion geografica (Ej. 5678,23): ");
 				double ycoord = sc.nextDouble();
 
-				//TODO Completar para la invocación del metodo 2A
+				//TODO Completar para la invocaciï¿½n del metodo 2A
 				//model.consultarPorLocalizacionHash(double xCoord, double yCoord)
 
 				//TODO Mostrar resultado de tipo InfraccionesLocalizacion 
@@ -91,11 +91,11 @@ public class Controller {
 				break;
 
 			case 3:
-				view.printMessage("Ingrese la fecha inicial del rango. Formato año-mes-dia (ej. 2008-06-21)");
+				view.printMessage("Ingrese la fecha inicial del rango. Formato aï¿½o-mes-dia (ej. 2008-06-21)");
 				String fechaInicialStr = sc.next();
 				LocalDate fechaInicial = ManejoFechaHora.convertirFecha_LD( fechaInicialStr );
 
-				view.printMessage("Ingrese la fecha final del rango. Formato año-mes-dia (ej. 2008-06-30)");
+				view.printMessage("Ingrese la fecha final del rango. Formato aï¿½o-mes-dia (ej. 2008-06-30)");
 				String fechaFinalStr = sc.next();
 				LocalDate fechaFinal = ManejoFechaHora.convertirFecha_LD( fechaFinalStr );
 
@@ -111,7 +111,7 @@ public class Controller {
 				view.printMessage("1B. Consultar los N Tipos con mas infracciones. Ingrese el valor de N: ");
 				int numeroTipos = sc.nextInt();
 
-				//TODO Completar para la invocación del metodo 1B				
+				//TODO Completar para la invocaciï¿½n del metodo 1B				
 				//model.rankingNViolationCodes(int N)
 				
 				//TODO Mostrar resultado de tipo Cola con N InfraccionesViolationCode
@@ -124,7 +124,7 @@ public class Controller {
 				view.printMessage("Ingrese la coordenada en Y de la localizacion geografica (Ej. 5678,23): ");
 				ycoord = sc.nextDouble();
 
-				//TODO Completar para la invocación del metodo 2B
+				//TODO Completar para la invocaciï¿½n del metodo 2B
 				//model.consultarPorLocalizacionArbol(double xCoord, double yCoord)
 
 				//TODO Mostrar resultado de tipo InfraccionesLocalizacion 
@@ -138,7 +138,7 @@ public class Controller {
 				view.printMessage("Ingrese la cantidad maxima de dinero que deben acumular las infracciones en sus rangos de fecha (Ej. 5678,23)");
 				double cantidadMaxima = sc.nextDouble();
 
-				//TODO Completar para la invocación del metodo 3B
+				//TODO Completar para la invocaciï¿½n del metodo 3B
 				//model.consultarFranjasAcumuladoEnRango(double valorInicial, double valorFinal)
 
 				//TODO Mostrar resultado de tipo Cola con InfraccionesFechaHora 
@@ -150,7 +150,7 @@ public class Controller {
 				int addressID = sc.nextInt();
 
 				startTime = System.currentTimeMillis();
-				//TODO Completar para la invocación del metodo 1C
+				//TODO Completar para la invocaciï¿½n del metodo 1C
 				//model.consultarPorAddressId(int addressID)
 
 				endTime = System.currentTimeMillis();
@@ -188,7 +188,7 @@ public class Controller {
 				int numeroLocalizaciones = sc.nextInt();
 
 				startTime = System.currentTimeMillis();
-				//TODO Completar para la invocación del metodo 3C
+				//TODO Completar para la invocaciï¿½n del metodo 3C
 				//model.rankingNLocalizaciones(int N)
 
 				endTime = System.currentTimeMillis();
