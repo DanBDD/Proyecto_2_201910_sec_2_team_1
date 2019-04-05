@@ -25,8 +25,59 @@ public class EstadisticasCargaInfracciones {
 	 * @param parametro2 con valor para un dato de la carga de archivos
 	 * 
 	 */
-	public EstadisticasCargaInfracciones()
+	public EstadisticasCargaInfracciones(int pTotalInfracciones, int pMes1, int pMes2,int pMes3 , int pMes4, int pMes5,int pMes6, int pMes7, int pMes8
+			, int pMes9, int pMes10, int pMes11, int pMes12, double pMinX, double pMinY, double pMaxX, double pMaxY)
 	{
+		totalInfracciones = pTotalInfracciones;
+		for(int i=0; i<12; i++){
+			if(i==0){
+				numeroInfraccionesxMes[i] = pMes1;
+				minimax[i] = pMinX;
+			}
+			else if(i == 1){
+				numeroInfraccionesxMes[i] = pMes2;
+				minimax[i] = pMinY;
+			}
+			else if(i == 2){
+				numeroInfraccionesxMes[i] = pMes3;
+				minimax[i] = pMaxX;
+			}
+			else if(i == 3){
+				numeroInfraccionesxMes[i] = pMes4;
+				minimax[i] = pMaxY;
+			}
+			else if(i == 4){
+				numeroInfraccionesxMes[i] = pMes5;
+				
+			}
+			else if(i == 5){
+				numeroInfraccionesxMes[i] = pMes6;
+			
+			}
+			else if(i == 6){
+				numeroInfraccionesxMes[i] = pMes7;
+				
+			}
+			else if(i == 7){
+				numeroInfraccionesxMes[i] = pMes8;
+				
+			}
+			else if(i == 8){
+				numeroInfraccionesxMes[i] = pMes9;
+				
+			}
+			else if(i == 9){
+				numeroInfraccionesxMes[i] = pMes10;
+				
+			}
+			else if(i == 10){
+				numeroInfraccionesxMes[i] = pMes11;
+				
+			}else if(i == 12){
+				numeroInfraccionesxMes[i] = pMes12;
+				
+			}
+		}
 		// TODO Definir los parametros del metodo
 		// TODO inicializar valores de atributos con valores de parametros
 	}
