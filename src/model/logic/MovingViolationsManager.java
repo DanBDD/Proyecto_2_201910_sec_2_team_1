@@ -141,42 +141,38 @@ public class MovingViolationsManager {
 		int contMes=0;
 		EstadisticasCargaInfracciones estadistica = null;
 		try{
-			if(numeroSemestre ==1){
-				for(int i = 0;i<sem1.length;i++){
-
-
-					String mes = sem1[i];
+			if(numeroSemestre ==2){
+				
+				for(int i = 0;i<sem2.length;i++){
+					contMes = 0;
+					String mes = sem2[i];
 					CSVReader lector = new CSVReader(new FileReader(mes));
 					String[] linea = lector.readNext();
 					linea=lector.readNext();
-					xmin=Double.parseDouble(linea[5]);
-					xmax=Double.parseDouble(linea[5]);
-					ymin=Double.parseDouble(linea[6]);
-					ymax=Double.parseDouble(linea[6]);
 					while ((linea = lector.readNext()) != null) {
-						contMes = 0;
+						
 						String obID = linea[0];
 						String location = linea[2];
 						int objectID = Integer.parseInt(obID);
 						double x=Double.parseDouble(linea[5]);
 						double y=Double.parseDouble(linea[6]);
-						if(x<xmin)
+						if(x<xmin || xmin == 0)
 							xmin=x;
-						else if(x>xmax)
+						else if(x>xmax || xmax == 0)
 							xmax=x;
-						if(y<ymin)
+						if(y<ymin || ymin == 0)
 							ymin=y;
-						else if(y>ymax)
+						else if(y>ymax || ymax == 0)
 							ymax=y;
 						String address = linea[3];
 						String streetSegID = linea[4];
 						String total = linea[9];
-						int totalPaid = Integer.parseInt(total);
+						double totalPaid = Double.parseDouble(total);
 						String accidentIndicator = linea[12];
 						String issueDate = linea[13];
 						String violationDesc = linea[15];
 						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address));
-						totalNuevo1++;
+						totalNuevo2++;
 						contMes++;
 						if(i == 0){
 							contMes = ju;
@@ -207,18 +203,14 @@ public class MovingViolationsManager {
 				estadistica = new EstadisticasCargaInfracciones(totalNuevo2, ju, ag, s,o ,n, d, xmin, ymin,xmax,ymax);
 			}
 			else{
-				for(int i = 0;i<sem2.length;i++){
-					
-					String mes = sem2[i];
+				for(int i = 0;i<sem1.length;i++){
+					contMes = 0;
+					String mes = sem1[i];
 					CSVReader lector = new CSVReader(new FileReader(mes));
 					String[] linea = lector.readNext();
 					linea=lector.readNext();
-					xmin=Double.parseDouble(linea[5]);
-					xmax=Double.parseDouble(linea[5]);
-					ymin=Double.parseDouble(linea[6]);
-					ymax=Double.parseDouble(linea[6]);
 					while ((linea = lector.readNext()) != null) {
-						contMes = 0;
+						
 						String obID = linea[0];
 						String location = linea[2];
 						int objectID = Integer.parseInt(obID);
@@ -240,7 +232,7 @@ public class MovingViolationsManager {
 						String issueDate = linea[13];
 						String violationDesc = linea[15];
 						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address));
-						totalNuevo2++;
+						totalNuevo1++;
 						contMes++;
 						if(i == 0){
 							contMes = enero;

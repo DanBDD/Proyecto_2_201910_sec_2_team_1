@@ -6,7 +6,7 @@ package model.vo;
 public class VOMovingViolations {
 
 	private int objectID;
-	private int totalPaid;
+	private double totalPaid;
 	private String location;
 	private String date;
 	private String accidentIndicator;
@@ -14,9 +14,9 @@ public class VOMovingViolations {
 	private String streetSegID;
 	private String addressID;
 	
-	public VOMovingViolations(int pObID, int ptotalPaid, String pLoc, String pDate, String pAccident, String pDesc, String pstreetID, String paddID) {
+	public VOMovingViolations(int pObID, double totalPaid2, String pLoc, String pDate, String pAccident, String pDesc, String pstreetID, String paddID) {
 		objectID = pObID;
-		totalPaid = ptotalPaid;
+		totalPaid = totalPaid2;
 		location = pLoc;
 		date = pDate;
 		accidentIndicator = pAccident;
