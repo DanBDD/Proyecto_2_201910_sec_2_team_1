@@ -13,8 +13,9 @@ public class VOMovingViolations {
 	private String violationDesc;
 	private String streetSegID;
 	private String addressID;
+	private String violationCode;
 	
-	public VOMovingViolations(int pObID, double totalPaid2, String pLoc, String pDate, String pAccident, String pDesc, String pstreetID, String paddID) {
+	public VOMovingViolations(int pObID, double totalPaid2, String pLoc, String pDate, String pAccident, String pDesc, String pstreetID, String paddID, String pCode) {
 		objectID = pObID;
 		totalPaid = totalPaid2;
 		location = pLoc;
@@ -23,6 +24,7 @@ public class VOMovingViolations {
 		violationDesc = pDesc;
 		streetSegID = pstreetID;
 		addressID = paddID;
+		violationCode = pCode;
 	}
 	
 	@Override
@@ -43,7 +45,9 @@ public class VOMovingViolations {
 		return objectID;
 	}	
 	
-	
+	public String getCode(){
+		return violationCode;
+	}
 	/**
 	 * @return location - Dirección en formato de texto.
 	 */
@@ -63,7 +67,7 @@ public class VOMovingViolations {
 	/**
 	 * @return totalPaid - Cuanto dinero efectivamente pagó el que recibió la infracción en USD.
 	 */
-	public int getTotalPaid() {
+	public double getTotalPaid() {
 
 		return totalPaid;
 	}

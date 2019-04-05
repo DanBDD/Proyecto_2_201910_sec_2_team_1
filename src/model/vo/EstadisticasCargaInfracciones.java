@@ -29,6 +29,8 @@ public class EstadisticasCargaInfracciones {
 	{
 		totalInfracciones = pTotalInfracciones;
 		numeroMeses =6;
+		numeroInfraccionesxMes = new int [6];
+		minimax = new double[4];
 		for(int i=0; i<12; i++){
 			if(i==0){
 				numeroInfraccionesxMes[i] = pMes1;

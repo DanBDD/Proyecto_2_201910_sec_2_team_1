@@ -170,8 +170,9 @@ public class MovingViolationsManager {
 						double totalPaid = Double.parseDouble(total);
 						String accidentIndicator = linea[12];
 						String issueDate = linea[13];
+						String violationCode = linea[14];
 						String violationDesc = linea[15];
-						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address));
+						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode));
 						totalNuevo2++;
 						contMes++;
 						if(i == 0){
@@ -216,13 +217,13 @@ public class MovingViolationsManager {
 						int objectID = Integer.parseInt(obID);
 						double x=Double.parseDouble(linea[5]);
 						double y=Double.parseDouble(linea[6]);
-						if(x<xmin)
+						if(x<xmin || xmin == 0)
 							xmin=x;
-						else if(x>xmax)
+						else if(x>xmax || xmax== 0)
 							xmax=x;
-						if(y<ymin)
+						if(y<ymin || ymin == 0)
 							ymin=y;
-						else if(y>ymax)
+						else if(y>ymax || ymax == 0)
 							ymax=y;
 						String address = linea[3];
 						String streetSegID = linea[4];
@@ -230,8 +231,9 @@ public class MovingViolationsManager {
 						double totalPaid = Double.parseDouble(total);
 						String accidentIndicator = linea[12];
 						String issueDate = linea[13];
+						String violationCode = linea[14];
 						String violationDesc = linea[15];
-						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address));
+						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode));
 						totalNuevo1++;
 						contMes++;
 						if(i == 0){
