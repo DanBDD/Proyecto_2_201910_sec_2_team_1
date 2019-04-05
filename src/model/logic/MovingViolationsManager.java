@@ -87,6 +87,8 @@ public class MovingViolationsManager {
 		double xmax=0;
 		double ymin=0;
 		double ymax=0;
+		EstadisticasCargaInfracciones estadistica;
+		int tot = 0;
 		int enero= 0;
 		int f=0;
 		int a =0;
@@ -143,7 +145,7 @@ public class MovingViolationsManager {
 					String violationDesc = lineaEnero[15];
 					//				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 					//						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-
+					tot++;
 					enero++;}
 				System.out.println("Datos de Enero:"+enero);
 				lectorEnero.close();
@@ -186,7 +188,7 @@ public class MovingViolationsManager {
 
 					//				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 					//						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-
+					tot++;
 					f++;}
 				System.out.println("Datos de Enero:"+f);
 				lectorFebrero.close();
@@ -229,7 +231,7 @@ public class MovingViolationsManager {
 
 					//				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 					//						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-
+					tot++;
 					m++;}
 				System.out.println("Datos de Enero:"+m);
 				lectorMarzo.close();
@@ -270,7 +272,8 @@ public class MovingViolationsManager {
 					String violationCode = lineaAbril[14];
 					String violationDesc = lineaAbril[15];
 					//				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
-					//						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));				
+					//						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));	
+					tot++;
 					a++;}
 				System.out.println("Datos de Enero:"+a);
 				lectorAbril.close();
@@ -313,7 +316,7 @@ public class MovingViolationsManager {
 
 					//				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 					//						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-
+					tot++;
 					mayo++;}
 				System.out.println("Datos de Enero:"+mayo);
 				lectorMayo.close();
@@ -356,11 +359,14 @@ public class MovingViolationsManager {
 
 					//				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 					//						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-
-					j++;}
+					tot++;
+					j++;
+					}
 				System.out.println("Datos de Enero:"+j);
 				lectorJunio.close();
+				estadistica = new EstadisticasCargaInfracciones(tot, enero, f, m, a ,mayo, j, xmin, ymin,xmax,ymax);
 			}
+			
 			else
 			{
 				CSVReader lectorJulio = new CSVReader(new FileReader(rutaJulio));
@@ -407,7 +413,7 @@ public class MovingViolationsManager {
 
 					//				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 					//						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-
+					tot++;
 					ju++;}
 				System.out.println("Datos de Enero:"+ju);
 				lectorJulio.close();
@@ -450,7 +456,7 @@ public class MovingViolationsManager {
 
 					//				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 					//						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-
+					tot++;
 					ag++;}
 				System.out.println("Datos de Enero:"+ag);
 				lectorAgosto.close();
@@ -493,7 +499,7 @@ public class MovingViolationsManager {
 
 					//				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 					//						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-
+					tot++;
 					s++;}
 				System.out.println("Datos de Enero:"+s);
 				lectorSeptiembre.close();
@@ -536,7 +542,7 @@ public class MovingViolationsManager {
 
 					//				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 					//						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-
+					tot++;
 					o++;}
 				System.out.println("Datos de Enero:"+o);
 				lectorOctubre.close();
@@ -579,7 +585,7 @@ public class MovingViolationsManager {
 
 					//				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 					//						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-
+					tot++;
 					n++;}
 				System.out.println("Datos de Enero:"+n);
 				lectorNoviembre.close();
@@ -622,13 +628,15 @@ public class MovingViolationsManager {
 
 					//				arreglo.agregar(new VOMovingViolations(objectID, issueDate, violationCode, fineAmt, address, streetSegID,
 					//						totalPaid, violationDesc, accidentIndicator, penalty1, penalty2));
-
+					tot++;
 					d++;}
 				System.out.println("Datos de Enero:"+d);
 				lectorDiciembre.close();
+				estadistica = new EstadisticasCargaInfracciones(tot, ju, ag, s, o ,n, d, xmin, ymin,xmax,ymax);
 			}
 			
-
+			
+			return estadistica;
 		} catch (IOException e) {
 
 			e.printStackTrace();

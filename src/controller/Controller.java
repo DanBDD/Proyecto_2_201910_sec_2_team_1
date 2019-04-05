@@ -222,8 +222,4 @@ public class Controller {
 			}
 		}
 	}
-
-	public void loadMovingViolations(int semestre) {
-		try {
-			
 }

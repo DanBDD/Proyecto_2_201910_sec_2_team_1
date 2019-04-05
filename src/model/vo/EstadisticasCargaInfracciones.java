@@ -25,10 +25,10 @@ public class EstadisticasCargaInfracciones {
 	 * @param parametro2 con valor para un dato de la carga de archivos
 	 * 
 	 */
-	public EstadisticasCargaInfracciones(int pTotalInfracciones, int pMes1, int pMes2,int pMes3 , int pMes4, int pMes5,int pMes6, int pMes7, int pMes8
-			, int pMes9, int pMes10, int pMes11, int pMes12, double pMinX, double pMinY, double pMaxX, double pMaxY)
+	public EstadisticasCargaInfracciones(int pTotalInfracciones, int pMes1, int pMes2,int pMes3 , int pMes4, int pMes5,int pMes6, double pMinX, double pMinY, double pMaxX, double pMaxY)
 	{
 		totalInfracciones = pTotalInfracciones;
+		numeroMeses =6;
 		for(int i=0; i<12; i++){
 			if(i==0){
 				numeroInfraccionesxMes[i] = pMes1;
@@ -54,29 +54,7 @@ public class EstadisticasCargaInfracciones {
 				numeroInfraccionesxMes[i] = pMes6;
 			
 			}
-			else if(i == 6){
-				numeroInfraccionesxMes[i] = pMes7;
-				
-			}
-			else if(i == 7){
-				numeroInfraccionesxMes[i] = pMes8;
-				
-			}
-			else if(i == 8){
-				numeroInfraccionesxMes[i] = pMes9;
-				
-			}
-			else if(i == 9){
-				numeroInfraccionesxMes[i] = pMes10;
-				
-			}
-			else if(i == 10){
-				numeroInfraccionesxMes[i] = pMes11;
-				
-			}else if(i == 12){
-				numeroInfraccionesxMes[i] = pMes12;
-				
-			}
+			
 		}
 		// TODO Definir los parametros del metodo
 		// TODO inicializar valores de atributos con valores de parametros
