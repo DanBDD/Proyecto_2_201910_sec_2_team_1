@@ -1,7 +1,7 @@
 package model.data_structures;
 /**
  * 
- * Este código fue tomado del Taller 3 de este curso, también debidamente citado.
+ * Este cï¿½digo fue tomado del Taller 3 de este curso, tambiï¿½n debidamente citado.
  *
  * @param <T> Objeto a guardar en esta estructura
  */
