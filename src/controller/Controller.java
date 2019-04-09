@@ -190,7 +190,7 @@ public class Controller {
 
 				startTime = System.currentTimeMillis();
 				//TODO Completar para la invocacion del metodo 4C
-				MaxColaPrioridad<InfraccionesViolationCode> n=model.ordenarCodigosPorNumeroInfracciones();
+				MaxHeapCP<InfraccionesViolationCode> n=model.ordenarCodigosPorNumeroInfracciones();
 				//TODO Mostrar grafica a partir del resultado del metodo anterior
 				view.printReq4C(n);
 				endTime = System.currentTimeMillis();

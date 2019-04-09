@@ -11,6 +11,7 @@ import com.opencsv.CSVReader;
 import model.data_structures.ArregloDinamico;
 import model.data_structures.IQueue;
 import model.data_structures.MaxColaPrioridad;
+import model.data_structures.MaxHeapCP;
 import model.vo.EstadisticaInfracciones;
 import model.vo.EstadisticasCargaInfracciones;
 import model.vo.InfraccionesFecha;
@@ -391,7 +392,7 @@ public class MovingViolationsManager {
 	 * @return Contenedora de objetos InfraccionesViolationCode.
 	  // TODO Definir la estructura Contenedora
 	 */
-	public MaxColaPrioridad<InfraccionesViolationCode> ordenarCodigosPorNumeroInfracciones()
+	public MaxHeapCP<InfraccionesViolationCode> ordenarCodigosPorNumeroInfracciones()
 	{
 		// TODO completar
 		// TODO Definir la Estructura Contenedora
