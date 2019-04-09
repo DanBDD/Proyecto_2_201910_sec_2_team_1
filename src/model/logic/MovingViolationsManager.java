@@ -10,6 +10,7 @@ import com.opencsv.CSVReader;
 
 import model.data_structures.ArregloDinamico;
 import model.data_structures.IQueue;
+import model.data_structures.MaxColaPrioridad;
 import model.vo.EstadisticaInfracciones;
 import model.vo.EstadisticasCargaInfracciones;
 import model.vo.InfraccionesFecha;
@@ -390,7 +391,7 @@ public class MovingViolationsManager {
 	 * @return Contenedora de objetos InfraccionesViolationCode.
 	  // TODO Definir la estructura Contenedora
 	 */
-	public Contenedora<InfraccionesViolationCode> ordenarCodigosPorNumeroInfracciones()
+	public MaxColaPrioridad<InfraccionesViolationCode> ordenarCodigosPorNumeroInfracciones()
 	{
 		// TODO completar
 		// TODO Definir la Estructura Contenedora

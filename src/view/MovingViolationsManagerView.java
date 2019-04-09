@@ -1,6 +1,7 @@
 package view;
 
 import model.data_structures.IQueue;
+import model.data_structures.MaxColaPrioridad;
 import model.vo.*;
 
 public class MovingViolationsManagerView {
@@ -166,7 +167,7 @@ public class MovingViolationsManagerView {
 	}
 	
 	
-	public void printReq4C(Contenedora<InfraccionesViolationCode> resultados) {
+	public void printReq4C(MaxColaPrioridad<InfraccionesViolationCode> resultados) {
 		//TODO La estructura Contenedora depende del metodo que retorna el resultado
 		//TODO Imprimir grafica ASCII con los codigos ordenados (de mayor a menor) por el total de sus infracciones 
 	}

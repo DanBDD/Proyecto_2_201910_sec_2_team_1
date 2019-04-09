@@ -2,7 +2,7 @@ package model.data_structures;
 
 import java.util.Iterator;
 
-public class MaxColaPrioridad <T extends Comparable<T>>implements ColaDePrioridad<T>{
+public class MaxColaPrioridad <T>implements ColaDePrioridad<T>{
 
 	private int numElementos;
 	private Nodo<T> primerNodo;

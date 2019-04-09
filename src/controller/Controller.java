@@ -20,22 +20,22 @@ public class Controller {
 
 	// Componente vista (consola)
 	private MovingViolationsManagerView view;
-	
+
 	// Componente modelo (logica de la aplicacion)
 	private MovingViolationsManager model;
-	
-	
+
+
 	private ArregloDinamico<VOMovingViolations> arreglo;
 	/**
 	 * Metodo constructor
 	 */
-	
+
 	public Controller()
 	{
 		view = new MovingViolationsManagerView();
 		model = new MovingViolationsManager();
 	}
-	
+
 	/**
 	 * Metodo encargado de ejecutar los  requerimientos segun la opcion indicada por el usuario
 	 */
@@ -71,10 +71,8 @@ public class Controller {
 				int numeroFranjas = sc.nextInt();
 
 				//TODO Completar para la invocaci�n del metodo 1A
-				//model.rankingNFranjas(int N)
-				
 				//TODO Mostrar resultado de tipo Cola con N InfraccionesFranjaHoraria
-				//view.printReq1A( ...);
+				view.printReq1A(model.rankingNFranjas(numeroFranjas));
 				break;
 
 			case 2:
@@ -82,12 +80,9 @@ public class Controller {
 				double xcoord = sc.nextDouble();
 				view.printMessage("Ingrese la coordenada en Y de la localizacion geografica (Ej. 5678,23): ");
 				double ycoord = sc.nextDouble();
-
 				//TODO Completar para la invocaci�n del metodo 2A
-				//model.consultarPorLocalizacionHash(double xCoord, double yCoord)
-
 				//TODO Mostrar resultado de tipo InfraccionesLocalizacion 
-				//view.printReq2A( ... )
+				view.printReq2A(model.consultarPorLocalizacionHash(xcoord, ycoord));
 				break;
 
 			case 3:
@@ -98,24 +93,18 @@ public class Controller {
 				view.printMessage("Ingrese la fecha final del rango. Formato a�o-mes-dia (ej. 2008-06-30)");
 				String fechaFinalStr = sc.next();
 				LocalDate fechaFinal = ManejoFechaHora.convertirFecha_LD( fechaFinalStr );
-
 				//TODO Completar para la invocacion del metodo 3A
-				//model.consultarInfraccionesPorRangoFechas(LocalDate fechaInicial, LocalDate fechaFinal)
-
 				//TODO Mostrar resultado de tipo Cola de InfraccionesFecha
-				//view.printReq3A( ... )
+				view.printReq3A(model.consultarInfraccionesPorRangoFechas(fechaInicial, fechaFinal));
 				break;
 
 
 			case 4:
 				view.printMessage("1B. Consultar los N Tipos con mas infracciones. Ingrese el valor de N: ");
 				int numeroTipos = sc.nextInt();
-
 				//TODO Completar para la invocaci�n del metodo 1B				
-				//model.rankingNViolationCodes(int N)
-				
 				//TODO Mostrar resultado de tipo Cola con N InfraccionesViolationCode
-				//view.printReq1B( ... )
+				view.printReq1B(model.rankingNViolationCodes(numeroTipos));
 				break;
 
 			case 5:						
@@ -125,10 +114,8 @@ public class Controller {
 				ycoord = sc.nextDouble();
 
 				//TODO Completar para la invocaci�n del metodo 2B
-				//model.consultarPorLocalizacionArbol(double xCoord, double yCoord)
-
 				//TODO Mostrar resultado de tipo InfraccionesLocalizacion 
-				//view.printReq2B( ... )
+				view.printReq2B(model.consultarPorLocalizacionArbol(xcoord, ycoord));
 				break;
 
 			case 6:
@@ -139,10 +126,8 @@ public class Controller {
 				double cantidadMaxima = sc.nextDouble();
 
 				//TODO Completar para la invocaci�n del metodo 3B
-				//model.consultarFranjasAcumuladoEnRango(double valorInicial, double valorFinal)
-
 				//TODO Mostrar resultado de tipo Cola con InfraccionesFechaHora 
-				//view.printReq3B( ... )
+				view.printReq3B(model.consultarFranjasAcumuladoEnRango(cantidadMinima, cantidadMaxima));
 				break;
 
 			case 7:
@@ -151,7 +136,7 @@ public class Controller {
 
 				startTime = System.currentTimeMillis();
 				//TODO Completar para la invocaci�n del metodo 1C
-				//model.consultarPorAddressId(int addressID)
+				InfraccionesLocalizacion v=model.consultarPorAddressId(addressID);
 
 				endTime = System.currentTimeMillis();
 
@@ -159,7 +144,7 @@ public class Controller {
 				view.printMessage("Tiempo requerimiento 1C: " + duration + " milisegundos");
 
 				//TODO Mostrar resultado de tipo InfraccionesLocalizacion 	
-				//view.printReq1C( ... )
+				view.printReq1C(v);
 				break;
 
 			case 8:
@@ -173,14 +158,14 @@ public class Controller {
 
 				startTime = System.currentTimeMillis();
 				//TODO Completar para la invocacion del metodo 2C
-				//model.consultarPorRangoHoras(LocalTime horaInicial, LocalTime horaFinal)
+				InfraccionesFranjaHorariaViolationCode c=model.consultarPorRangoHoras( horaInicial,  horaFinal);
 
 				endTime = System.currentTimeMillis();
 
 				duration = endTime - startTime;
 				view.printMessage("Tiempo requerimiento 2C: " + duration + " milisegundos");
 				//TODO Mostrar resultado de tipo InfraccionesFranjaHorarioViolationCode
-				//view.printReq2C( ... )
+				view.printReq2C(c);
 				break;
 
 			case 9:
@@ -189,14 +174,14 @@ public class Controller {
 
 				startTime = System.currentTimeMillis();
 				//TODO Completar para la invocaci�n del metodo 3C
-				//model.rankingNLocalizaciones(int N)
+				IQueue<InfraccionesLocalizacion> b=model.rankingNLocalizaciones(numeroLocalizaciones);
 
 				endTime = System.currentTimeMillis();
 
 				duration = endTime - startTime;
 				view.printMessage("Tiempo requerimiento 3C: " + duration + " milisegundos");
 				//TODO Mostrar resultado de tipo Cola con InfraccionesLocalizacion
-				//view.printReq3C( ... )
+				view.printReq3C(b);
 				break;
 
 			case 10:
@@ -205,10 +190,9 @@ public class Controller {
 
 				startTime = System.currentTimeMillis();
 				//TODO Completar para la invocacion del metodo 4C
-				//model.ordenarCodigosPorNumeroInfracciones()
-
+				MaxColaPrioridad<InfraccionesViolationCode> n=model.ordenarCodigosPorNumeroInfracciones();
 				//TODO Mostrar grafica a partir del resultado del metodo anterior
-				//view.printReq4C( ... )
+				view.printReq4C(n);
 				endTime = System.currentTimeMillis();
 
 				duration = endTime - startTime;
