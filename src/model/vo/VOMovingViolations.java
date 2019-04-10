@@ -3,7 +3,7 @@ package model.vo;
 /**
  * Representation of a Trip object
  */
-public class VOMovingViolations {
+public class VOMovingViolations implements Comparable<VOMovingViolations> {
 
 	private int objectID;
 	private double totalPaid;
@@ -14,8 +14,10 @@ public class VOMovingViolations {
 	private String streetSegID;
 	private String addressID;
 	private String violationCode;
+	private double x;
+	private double y;
 	
-	public VOMovingViolations(int pObID, double totalPaid2, String pLoc, String pDate, String pAccident, String pDesc, String pstreetID, String paddID, String pCode) {
+	public VOMovingViolations(int pObID, double totalPaid2, String pLoc, String pDate, String pAccident, String pDesc, String pstreetID, String paddID, String pCode, double x, double y) {
 		objectID = pObID;
 		totalPaid = totalPaid2;
 		location = pLoc;
@@ -25,6 +27,8 @@ public class VOMovingViolations {
 		streetSegID = pstreetID;
 		addressID = paddID;
 		violationCode = pCode;
+		this.x=x;
+		this.y=y;
 	}
 	
 	@Override
@@ -94,5 +98,31 @@ public class VOMovingViolations {
 	
 	public String getAddressId() {
 		return addressID;
+	}
+	public double darX()
+	{
+		return x;
+	}
+	public double darY()
+	{
+		return y;
+	}
+
+	@Override
+	public int compareTo(VOMovingViolations o) {
+		double d=this.darX()-o.darX();
+		if(d<0)
+			return -1;
+		else if(d>0)
+			return 1;
+		else
+		{
+			double d2=this.darY()-o.darY();
+			if(d2<0)
+				return -1;
+			else if(d2>0)
+				return 1;
+			return 0;
+		}
 	}
 }

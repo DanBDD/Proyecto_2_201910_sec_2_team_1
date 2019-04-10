@@ -3,15 +3,21 @@ package model.logic;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import com.opencsv.CSVReader;
 
 import model.data_structures.ArregloDinamico;
+import model.data_structures.Cola;
+import model.data_structures.Comparaciones;
 import model.data_structures.IQueue;
+import model.data_structures.LinearProbing;
 import model.data_structures.MaxColaPrioridad;
 import model.data_structures.MaxHeapCP;
+import model.data_structures.SeparateChaining;
 import model.vo.EstadisticaInfracciones;
 import model.vo.EstadisticasCargaInfracciones;
 import model.vo.InfraccionesFecha;
@@ -78,6 +84,8 @@ public class MovingViolationsManager {
 	private ArregloDinamico<VOMovingViolations> arreglo;
 	private String[] sem1;
 	private String[] sem2;
+	private Comparable<VOMovingViolations> [ ] muestra;
+
 	/**
 	 * Metodo constructor
 	 */
@@ -150,7 +158,6 @@ public class MovingViolationsManager {
 					String mes = sem2[i];
 					CSVReader lector = new CSVReader(new FileReader(mes));
 					String[] linea = lector.readNext();
-					linea=lector.readNext();
 					while ((linea = lector.readNext()) != null) {
 
 						String obID = linea[0];
@@ -174,7 +181,7 @@ public class MovingViolationsManager {
 						String issueDate = linea[13];
 						String violationCode = linea[14];
 						String violationDesc = linea[15];
-						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode));
+						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode,x,y));
 						totalNuevo2++;
 						contMes++;
 						if(i == 0){
@@ -211,7 +218,6 @@ public class MovingViolationsManager {
 					String mes = sem1[i];
 					CSVReader lector = new CSVReader(new FileReader(mes));
 					String[] linea = lector.readNext();
-					linea=lector.readNext();
 					while ((linea = lector.readNext()) != null) {
 
 						String obID = linea[0];
@@ -235,7 +241,7 @@ public class MovingViolationsManager {
 						String issueDate = linea[13];
 						String violationCode = linea[14];
 						String violationDesc = linea[15];
-						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode));
+						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode,x,y));
 						totalNuevo1++;
 						contMes++;
 						if(i == 0){
@@ -284,7 +290,189 @@ public class MovingViolationsManager {
 	public IQueue<InfraccionesFranjaHoraria> rankingNFranjas(int N)
 	{
 		// TODO completar
-		return null;		
+		MaxColaPrioridad<InfraccionesFranjaHoraria> c= new MaxColaPrioridad<>();
+		IQueue<InfraccionesFranjaHoraria> retorno = new Cola<>();
+		//Una por cada franja horaria
+		IQueue<VOMovingViolations> cero=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> uno=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> dos=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> tres=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> cuatro=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> cinco=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> seis=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> siete=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> ocho=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> nueve=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> diez=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> once=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> doce=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> trece=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> catorce=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> quince=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> diesiceis=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> diesiete=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> docho=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> dnueve=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> v=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> vuno=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> vdos=new Cola<VOMovingViolations>();
+		IQueue<VOMovingViolations> vtres=new Cola<VOMovingViolations>();
+		for(int i=0;i<arreglo.darTamano();i++)
+		{
+			VOMovingViolations actual = arreglo.darElem(i);
+			String num =actual.getTicketIssueDate().split(":")[0].split("T")[1];
+			if(num.equals("00"))
+			{
+				cero.enqueue(actual);
+			}
+			else if(num.equals("01"))
+			{
+				uno.enqueue(actual);
+			}
+			else if(num.equals("02"))
+			{
+				dos.enqueue(actual);
+			}
+			else if(num.equals("03"))
+			{
+				tres.enqueue(actual);
+			}
+			else if(num.equals("04"))
+			{
+				cuatro.enqueue(actual);
+			}
+			else if(num.equals("05"))
+			{
+				cinco.enqueue(actual);
+			}
+			else if(num.equals("06"))
+			{
+				seis.enqueue(actual);
+			}
+			else if(num.equals("07"))
+			{
+				siete.enqueue(actual);
+			}
+			else if(num.equals("08"))
+			{
+				ocho.enqueue(actual);
+			}
+			else if(num.equals("09"))
+			{
+				nueve.enqueue(actual);
+			}
+			else if(num.equals("10"))
+			{
+				diez.enqueue(actual);
+			}
+			else if(num.equals("11"))
+			{
+				once.enqueue(actual);
+			}
+			else if(num.equals("12"))
+			{
+				doce.enqueue(actual);
+			}
+			else if(num.equals("13"))
+			{
+				trece.enqueue(actual);
+			}
+			else if(num.equals("14"))
+			{
+				catorce.enqueue(actual);
+			}
+			else if(num.equals("15"))
+			{
+				quince.enqueue(actual);
+			}
+			else if(num.equals("16"))
+			{
+				diesiceis.enqueue(actual);
+			}
+			else if(num.equals("17"))
+			{
+				diesiete.enqueue(actual);
+			}
+			else if(num.equals("18"))
+			{
+				docho.enqueue(actual);
+			}
+			else if(num.equals("19"))
+			{
+				dnueve.enqueue(actual);
+			}
+			else if(num.equals("20"))
+			{
+				v.enqueue(actual);
+			}
+			else if(num.equals("21"))
+			{
+				vuno.enqueue(actual);
+			}
+			else if(num.equals("22"))
+			{
+				vdos.enqueue(actual);
+			}
+			else if(num.equals("23"))
+			{
+				vtres.enqueue(actual);
+			}
+		}		
+		InfraccionesFranjaHoraria e0= new InfraccionesFranjaHoraria(LocalTime.parse("00:00:00"), LocalTime.parse("00:59:59"), cero);
+		InfraccionesFranjaHoraria e1= new InfraccionesFranjaHoraria(LocalTime.parse("01:00:00"), LocalTime.parse("01:59:59"), uno);
+		InfraccionesFranjaHoraria e2= new InfraccionesFranjaHoraria(LocalTime.parse("02:00:00"), LocalTime.parse("02:59:59"), dos);
+		InfraccionesFranjaHoraria e3= new InfraccionesFranjaHoraria(LocalTime.parse("03:00:00"), LocalTime.parse("03:59:59"), tres);
+		InfraccionesFranjaHoraria e4= new InfraccionesFranjaHoraria(LocalTime.parse("04:00:00"), LocalTime.parse("04:59:59"), cuatro);
+		InfraccionesFranjaHoraria e5= new InfraccionesFranjaHoraria(LocalTime.parse("05:00:00"), LocalTime.parse("05:59:59"), cinco);
+		InfraccionesFranjaHoraria e6= new InfraccionesFranjaHoraria(LocalTime.parse("06:00:00"), LocalTime.parse("06:59:59"), seis);
+		InfraccionesFranjaHoraria e7= new InfraccionesFranjaHoraria(LocalTime.parse("07:00:00"), LocalTime.parse("07:59:59"), siete);
+		InfraccionesFranjaHoraria e8= new InfraccionesFranjaHoraria(LocalTime.parse("08:00:00"), LocalTime.parse("08:59:59"), ocho);
+		InfraccionesFranjaHoraria e9= new InfraccionesFranjaHoraria(LocalTime.parse("09:00:00"), LocalTime.parse("09:59:59"), nueve);
+		InfraccionesFranjaHoraria e10= new InfraccionesFranjaHoraria(LocalTime.parse("10:00:00"), LocalTime.parse("10:59:59"), diez);
+		InfraccionesFranjaHoraria e11= new InfraccionesFranjaHoraria(LocalTime.parse("11:00:00"), LocalTime.parse("11:59:59"), once);
+		InfraccionesFranjaHoraria e12= new InfraccionesFranjaHoraria(LocalTime.parse("12:00:00"), LocalTime.parse("12:59:59"), doce);
+		InfraccionesFranjaHoraria e13= new InfraccionesFranjaHoraria(LocalTime.parse("13:00:00"), LocalTime.parse("13:59:59"), trece);
+		InfraccionesFranjaHoraria e14= new InfraccionesFranjaHoraria(LocalTime.parse("14:00:00"), LocalTime.parse("14:59:59"), catorce);
+		InfraccionesFranjaHoraria e15= new InfraccionesFranjaHoraria(LocalTime.parse("15:00:00"), LocalTime.parse("15:59:59"), quince);
+		InfraccionesFranjaHoraria e16= new InfraccionesFranjaHoraria(LocalTime.parse("16:00:00"), LocalTime.parse("16:59:59"), diesiceis);
+		InfraccionesFranjaHoraria e17= new InfraccionesFranjaHoraria(LocalTime.parse("17:00:00"), LocalTime.parse("17:59:59"), diesiete);
+		InfraccionesFranjaHoraria e18= new InfraccionesFranjaHoraria(LocalTime.parse("18:00:00"), LocalTime.parse("18:59:59"), docho);
+		InfraccionesFranjaHoraria e19= new InfraccionesFranjaHoraria(LocalTime.parse("19:00:00"), LocalTime.parse("19:59:59"), dnueve);
+		InfraccionesFranjaHoraria e20= new InfraccionesFranjaHoraria(LocalTime.parse("20:00:00"), LocalTime.parse("20:59:59"), v);
+		InfraccionesFranjaHoraria e21= new InfraccionesFranjaHoraria(LocalTime.parse("21:00:00"), LocalTime.parse("21:59:59"), vuno);
+		InfraccionesFranjaHoraria e22= new InfraccionesFranjaHoraria(LocalTime.parse("22:00:00"), LocalTime.parse("22:59:59"), vdos);
+		InfraccionesFranjaHoraria e23= new InfraccionesFranjaHoraria(LocalTime.parse("23:00:00"), LocalTime.parse("23:59:59"), vtres);
+
+		c.agregar(e0);
+		c.agregar(e1);
+		c.agregar(e2);
+		c.agregar(e3);
+		c.agregar(e4);
+		c.agregar(e5);
+		c.agregar(e6);
+		c.agregar(e7);
+		c.agregar(e8);
+		c.agregar(e9);
+		c.agregar(e10);
+		c.agregar(e11);
+		c.agregar(e12);
+		c.agregar(e13);
+		c.agregar(e14);
+		c.agregar(e15);
+		c.agregar(e16);
+		c.agregar(e17);
+		c.agregar(e18);
+		c.agregar(e19);
+		c.agregar(e20);
+		c.agregar(e21);
+		c.agregar(e22);
+		c.agregar(e23);
+		for (int i=0;i<N;i++)
+		{
+			retorno.enqueue(c.delMax());
+		}
+
+		return retorno;		
 	}
 
 	/**
@@ -293,13 +481,47 @@ public class MovingViolationsManager {
 	 * @param  double xCoord : Coordenada X de la localizacion de la infracci�n
 	 *			double yCoord : Coordenada Y de la localizacion de la infracci�n
 	 * @return Objeto InfraccionesLocalizacion
-	 */
+	 */			
 	public InfraccionesLocalizacion consultarPorLocalizacionHash(double xCoord, double yCoord)
 	{
 		// TODO completar
-		return null;		
+		LinearProbing<Double, InfraccionesLocalizacion> linear=new LinearProbing<>(3000);
+		Comparable[] copia = generarMuestra(arreglo.darTamano());
+		Sort.ordenarMergeSort(copia, Comparaciones.CORD.comparador, true);
+		IQueue<VOMovingViolations> cola = new Cola<>();
+		for (int i = 0; i < copia.length; i++) {
+			VOMovingViolations actual=(VOMovingViolations) copia[i];
+			if(actual.compareTo((VOMovingViolations) copia[i+1])== 0) {
+				cola.enqueue(actual);
+			}
+			else if(actual.compareTo((VOMovingViolations) copia[i+1])!= 0)
+			{
+				cola.enqueue(actual);
+				InfraccionesLocalizacion c ;
+				if(actual.getAddressId()!="" && actual.getStreetSegId()!="")
+					c=new InfraccionesLocalizacion(actual.darX(), actual.darY(),actual.getLocation(), Integer.parseInt(actual.getAddressId()), Integer.parseInt(actual.getStreetSegId()), cola);
+				c=new InfraccionesLocalizacion(actual.darX(), actual.darY(),actual.getLocation(), 0, 0, cola);
+				linear.put(actual.darX()+actual.darY(), c);
+				cola=null;
+				cola= new Cola<>();
+			}
+		}
+		return linear.get(xCoord+yCoord);		
 	}
-
+	@SuppressWarnings("unchecked")
+	public Comparable<VOMovingViolations> [ ] generarMuestra( int n )
+	{
+		muestra = new Comparable[ n ];
+		// TODO Llenar la muestra aleatoria con los datos guardados en la estructura de datos
+		ArregloDinamico<VOMovingViolations> e = arreglo;
+		int pos=0;
+		while(pos<n)
+		{
+			muestra[pos] = e.darElem(pos);
+			pos++;
+		}
+		return muestra;
+	}
 	/**
 	 * Requerimiento 3A: Buscar las infracciones por rango de fechas
 	 * @param  LocalDate fechaInicial: Fecha inicial del rango de b�squeda
@@ -398,6 +620,5 @@ public class MovingViolationsManager {
 		// TODO Definir la Estructura Contenedora
 		return null;		
 	}
-
 
 }

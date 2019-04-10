@@ -9,7 +9,7 @@ import model.data_structures.IQueue;
  * Agrupa las infracciones por un rango de fecha/hora segun sea el caso
  */
 
-public class InfraccionesFranjaHoraria extends EstadisticaInfracciones {	
+public class InfraccionesFranjaHoraria extends EstadisticaInfracciones implements Comparable<InfraccionesFranjaHoraria>{	
 
 	@Override
 	public String toString() {
@@ -49,6 +49,16 @@ public class InfraccionesFranjaHoraria extends EstadisticaInfracciones {
 	 */
 	public LocalTime getFranjaFinal() {
 		return hora_Final;
+	}
+
+	@Override
+	public int compareTo(InfraccionesFranjaHoraria o) {
+		double num= this.totalInfracciones-o.totalInfracciones;
+		if(num<0)
+			return -1;
+		else if(num>0)
+			return 1;
+		return 0;
 	}
 	
 }

@@ -1,12 +1,17 @@
 package model.data_structures;
 
 import java.util.Iterator;
-
+/**
+ * 
+ * Este c�digo fue tomado del Taller 3 de este curso, tambi�n debidamente citado.
+ *
+ * @param <T> Objeto a guardar en esta estructura
+ */
 public class Cola<T extends Comparable<T>> implements IQueue<T>{
 
 	private Nodo<T> primerNodo;
 
-
+	private Nodo<T> ultimo;
 	private int numElementos;
 
 	public Cola()
@@ -43,24 +48,15 @@ public class Cola<T extends Comparable<T>> implements IQueue<T>{
 
 	@Override
 	public void enqueue(T t) {
-		// TODO Auto-generated method stub
-		if(numElementos==0)
-		{
-			primerNodo=new Nodo<T>(t);
-		}
+		Nodo<T> nNode = new Nodo<T>(t);
+		if(ultimo != null)
+			ultimo.cambiarSiguiente(nNode);
 		else
-		{
-			Nodo<T> ultimo = new Nodo<T>(t);
-			Nodo<T> actual=primerNodo;
-			while(actual.darSiguiente()!=null)
-			{
-				actual=actual.darSiguiente();
-			}
-			actual.cambiarSiguiente(ultimo);
-			ultimo.cambiarSiguiente(null);
-		}
+			primerNodo = nNode;
+		ultimo = nNode;
 		numElementos++;
 	}
+	
 	@Override
 	public T dequeue() {
 		T elem = primerNodo.darElem();

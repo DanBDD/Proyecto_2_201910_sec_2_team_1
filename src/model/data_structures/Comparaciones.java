@@ -27,23 +27,36 @@ public enum Comparaciones implements Serializable{
 		}
 
 
-//	}),
-//	DATE("Fecha", new SerializableComparator<VOMovingViolations>() {
-//		/**
-//		 * 
-//		 */
-//
-//		/**
-//		 * 
-//		 */
-//		private static final long serialVersionUID = 1456L;
-//
-//		@Override
-//		public int compare(VOMovingViolations o1, VOMovingViolations o2) {
-//			// TODO Auto-generated method stub
-//
-//			return o2.darFechaLocalDateTime().compareTo(o1.darFechaLocalDateTime());
-//		}
+	}),
+	CORD("CORD", new SerializableComparator<VOMovingViolations>() {
+		/**
+		 * 
+		 */
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1456L;
+
+		@Override
+		public int compare(VOMovingViolations o1, VOMovingViolations o2) {
+			// TODO Auto-generated method stub
+			double d=o1.darX()-o2.darX();
+			if(d<0)
+				return -1;
+			else if(d>0)
+				return 1;
+			else
+			{
+				double d2=o1.darY()-o2.darY();
+				if(d2<0)
+					return -1;
+				else if(d2>0)
+					return 1;
+				return 0;
+			}
+
+		}
 	});
 
 	/**
