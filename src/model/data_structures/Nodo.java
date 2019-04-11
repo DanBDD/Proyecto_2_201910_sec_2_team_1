@@ -5,7 +5,7 @@ package model.data_structures;
  *
  * @param <T> Objeto a guardar en esta estructura
  */
-public class Nodo<T extends Comparable<T>>{
+public class Nodo<T>{
 
 	private Nodo<T> siguiente;
 	

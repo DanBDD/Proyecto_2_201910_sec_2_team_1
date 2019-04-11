@@ -17,6 +17,7 @@ import model.data_structures.IQueue;
 import model.data_structures.LinearProbing;
 import model.data_structures.MaxColaPrioridad;
 import model.data_structures.MaxHeapCP;
+import model.data_structures.RedBlackBST;
 import model.data_structures.SeparateChaining;
 import model.vo.EstadisticaInfracciones;
 import model.vo.EstadisticasCargaInfracciones;
@@ -174,7 +175,15 @@ public class MovingViolationsManager {
 						else if(y>ymax || ymax == 0)
 							ymax=y;
 						String address = linea[3];
+						if (address.equals(""))
+						{
+							address ="0";
+						}
 						String streetSegID = linea[4];
+						if(streetSegID.equals(""))
+						{
+							streetSegID="0";
+						}
 						String total = linea[9];
 						double totalPaid = Double.parseDouble(total);
 						String accidentIndicator = linea[12];
@@ -234,7 +243,15 @@ public class MovingViolationsManager {
 						else if(y>ymax || ymax == 0)
 							ymax=y;
 						String address = linea[3];
+						if (address.equals(""))
+						{
+							address ="0";
+						}
 						String streetSegID = linea[4];
+						if(streetSegID.equals(""))
+						{
+							streetSegID="0";
+						}
 						String total = linea[9];
 						double totalPaid = Double.parseDouble(total);
 						String accidentIndicator = linea[12];
@@ -489,7 +506,7 @@ public class MovingViolationsManager {
 		Comparable[] copia = generarMuestra(arreglo.darTamano());
 		Sort.ordenarMergeSort(copia, Comparaciones.CORD.comparador, true);
 		IQueue<VOMovingViolations> cola = new Cola<>();
-		for (int i = 0; i < copia.length; i++) {
+		for (int i = 0; i+1 < copia.length; i++) {
 			VOMovingViolations actual=(VOMovingViolations) copia[i];
 			if(actual.compareTo((VOMovingViolations) copia[i+1])== 0) {
 				cola.enqueue(actual);
@@ -498,9 +515,7 @@ public class MovingViolationsManager {
 			{
 				cola.enqueue(actual);
 				InfraccionesLocalizacion c ;
-				if(actual.getAddressId()!="" && actual.getStreetSegId()!="")
-					c=new InfraccionesLocalizacion(actual.darX(), actual.darY(),actual.getLocation(), Integer.parseInt(actual.getAddressId()), Integer.parseInt(actual.getStreetSegId()), cola);
-				c=new InfraccionesLocalizacion(actual.darX(), actual.darY(),actual.getLocation(), 0, 0, cola);
+				c=new InfraccionesLocalizacion(actual.darX(), actual.darY(),actual.getLocation(), Integer.parseInt(actual.getAddressId()), Integer.parseInt(actual.getStreetSegId()), cola);
 				linear.put(actual.darX()+actual.darY(), c);
 				cola=null;
 				cola= new Cola<>();
@@ -531,7 +546,27 @@ public class MovingViolationsManager {
 	public IQueue<InfraccionesFecha> consultarInfraccionesPorRangoFechas(LocalDate fechaInicial, LocalDate fechaFinal)
 	{
 		// TODO completar
-		return null;		
+		RedBlackBST<String, InfraccionesFecha> a = new RedBlackBST<>();
+		Comparable[] copia = generarMuestra(arreglo.darTamano());
+		Sort.ordenarMergeSort(copia, Comparaciones.DATE.comparador, true);
+		IQueue<VOMovingViolations> cola = new Cola<>();
+		for (int i = 0; i+1 < copia.length; i++) {
+			VOMovingViolations actual=(VOMovingViolations) copia[i];
+			VOMovingViolations siguiente=(VOMovingViolations) copia[i+1];
+			if(actual.getTicketIssueDate().split("T")[0].equals(siguiente.getTicketIssueDate().split("T")[0])) {
+				cola.enqueue(actual);
+			}
+			else
+			{
+				cola.enqueue(actual);
+				InfraccionesFecha c ;
+				c=new InfraccionesFecha(cola,ManejoFechaHora.convertirFecha_LD(actual.getTicketIssueDate().split("T")[0]));
+				a.put(actual.getTicketIssueDate(), c);
+				cola=null;
+				cola= new Cola<>();
+			}
+		}
+		return a.values(fechaInicial.toString(), fechaFinal.toString());
 	}
 
 	/**

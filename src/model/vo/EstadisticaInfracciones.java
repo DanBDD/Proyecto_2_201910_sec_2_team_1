@@ -56,8 +56,6 @@ public class EstadisticaInfracciones {
 	 * Total de infracciones que terminaron en accidentes
 	 */
 	private double nAcc;
-
-
 	/**
 	 * Crea un nuevo conjunto con las infracciones
 	 * @param listaInfracciones - Lista con las infracciones que cumplen el criterio de agrupamiento
@@ -106,7 +104,6 @@ public class EstadisticaInfracciones {
 			else
 				nAcc++;
 		}
-		System.out.println(acc);
 		return (acc/totalInfracciones)*100;   //TODO Calcular con base en la lista
 	}	
 	/**
@@ -117,7 +114,6 @@ public class EstadisticaInfracciones {
 	public double getPorcentajeNoAccidentes() {
 		//TODO Completar para que calcule el porcentaje de las infracciones del conjunto que NO sufrieron accidentes
 		//con respecto al total.
-
 		return  (nAcc/totalInfracciones)*100;
 	}
 
