@@ -1,5 +1,7 @@
 package model.vo;
 
+import java.util.Iterator;
+
 import model.data_structures.IQueue;
 
 /**
@@ -124,7 +126,11 @@ public class EstadisticaInfracciones {
 	 */
 	public double getValorTotal() {
 		//TODO Completar para calcular el valor total de dinero que representan las infracciones
-
+		Iterator<VOMovingViolations> it = this.getListaInfracciones().iterator();
+		while(it.hasNext()){
+			VOMovingViolations actual = it.next();
+			valorTotal += actual.getTotalPaid();
+		}
 		return valorTotal;
 	}	
 

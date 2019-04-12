@@ -52,6 +52,29 @@ public enum Comparaciones implements Serializable{
 
 
 	}),
+	VIOLATIONCODE("ViolationCode", new SerializableComparator<VOMovingViolations>() {
+
+		private static final long serialVersionUID = 123L;
+
+		@Override
+		public int compare(VOMovingViolations o1, VOMovingViolations o2) {
+			int comp = 0;
+			int cod1 = Integer.parseInt(o1.getCode().substring(1));
+			int cod2 = Integer.parseInt(o2.getCode().substring(1));
+			if((cod1 - cod2) > 0){
+				comp = 1;
+			}
+			else if((cod1 - cod2) < 0){
+				comp = -1;
+			}
+			else if((cod1 - cod2) == 0){
+				comp = 0;
+			}
+			return comp;
+		}
+
+
+	}),
 	CORD("CORD", new SerializableComparator<VOMovingViolations>() {
 		/**
 		 * 

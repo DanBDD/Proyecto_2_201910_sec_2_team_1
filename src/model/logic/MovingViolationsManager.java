@@ -577,8 +577,30 @@ public class MovingViolationsManager {
 	 */
 	public IQueue<InfraccionesViolationCode> rankingNViolationCodes(int N)
 	{
-		// TODO completar
-		return null;		
+		IQueue<InfraccionesViolationCode> res = new Cola<>();
+		IQueue<VOMovingViolations> aux = new Cola<>();
+		MaxColaPrioridad<InfraccionesViolationCode> pre = new MaxColaPrioridad<>();
+		Comparable[] copia = generarMuestra(arreglo.darTamano());
+		Sort.ordenarMergeSort(copia, Comparaciones.VIOLATIONCODE.comparador, true);
+		for(int i = 0; i<copia.length-1; i++){
+			VOMovingViolations actual = (VOMovingViolations) copia[i];
+			VOMovingViolations sig = (VOMovingViolations) copia[i+1];
+
+			if(actual.getCode().equals(sig.getCode())){
+				aux.enqueue(actual);
+			}
+			else{
+				aux.enqueue(actual);
+				InfraccionesViolationCode elem = new InfraccionesViolationCode(actual.getCode(), aux);
+				pre.agregar(elem);
+				aux = null;
+				aux = new Cola<>();
+			}
+		}
+		for(int j = 0; j<N; j++){
+			res.enqueue(pre.delMax());
+		}
+		return res;
 	}
 
 
@@ -591,8 +613,27 @@ public class MovingViolationsManager {
 	 */
 	public InfraccionesLocalizacion consultarPorLocalizacionArbol(double xCoord, double yCoord)
 	{
-		// TODO completar
-		return null;		
+
+		RedBlackBST<Double, InfraccionesLocalizacion> arbol = new RedBlackBST<Double, InfraccionesLocalizacion>();
+		Comparable[] copia = generarMuestra(arreglo.darTamano());
+		Sort.ordenarMergeSort(copia, Comparaciones.CORD.comparador, true);
+		IQueue<VOMovingViolations> cola = new Cola<>();
+		for (int i = 1; i < copia.length-1; i++) {
+			VOMovingViolations actual=(VOMovingViolations) copia[i];
+			if(actual.compareTo((VOMovingViolations) copia[i+1])== 0) {
+				cola.enqueue(actual);
+			}
+			else if(actual.compareTo((VOMovingViolations) copia[i+1])!= 0)
+			{
+				cola.enqueue(actual);
+				InfraccionesLocalizacion c ;
+				c=new InfraccionesLocalizacion(actual.darX(), actual.darY(),actual.getLocation(), Integer.parseInt(actual.getAddressId()), Integer.parseInt(actual.getStreetSegId()), cola);
+				arbol.put(actual.darX()+actual.darY(), c);
+				cola=null;
+				cola= new Cola<>();
+			}
+		}
+		return arbol.get(xCoord+yCoord);		
 	}
 
 	/**
@@ -604,8 +645,8 @@ public class MovingViolationsManager {
 	 */
 	public IQueue<InfraccionesFechaHora> consultarFranjasAcumuladoEnRango(double valorInicial, double valorFinal)
 	{
-		// TODO completar
-		return null;		
+		IQueue<InfraccionesFechaHora> res = new Cola<>();
+		return res;		
 	}
 
 	/**
