@@ -16,8 +16,11 @@ public class VOMovingViolations implements Comparable<VOMovingViolations> {
 	private String violationCode;
 	private double x;
 	private double y;
+	private double amt;
+	private double penalty1;
+	private double penalty2;
 	
-	public VOMovingViolations(int pObID, double totalPaid2, String pLoc, String pDate, String pAccident, String pDesc, String pstreetID, String paddID, String pCode, double x, double y) {
+	public VOMovingViolations(int pObID, double totalPaid2, String pLoc, String pDate, String pAccident, String pDesc, String pstreetID, String paddID, String pCode, double x, double y, double pAmt, double pP1, double pP2) {
 		objectID = pObID;
 		totalPaid = totalPaid2;
 		location = pLoc;
@@ -29,6 +32,9 @@ public class VOMovingViolations implements Comparable<VOMovingViolations> {
 		violationCode = pCode;
 		this.x=x;
 		this.y=y;
+		amt = pAmt;
+		penalty1 = pP1;
+		penalty2 = pP2;
 	}
 	
 	@Override
@@ -40,6 +46,17 @@ public class VOMovingViolations implements Comparable<VOMovingViolations> {
 				+ getAddressId() + "]\n\n";
 	}
 
+	public double getAmt(){
+		return amt;
+	}
+	
+	public double getP1(){
+		return penalty1;
+	}
+	
+	public double getP2(){
+		return penalty2;
+	}
 
 	/**
 	 * @return id - Identificador único de la infracción

@@ -184,13 +184,26 @@ public class MovingViolationsManager {
 						{
 							streetSegID="0";
 						}
+						String amt = linea[8];
+						double pamt = Integer.parseInt(amt);
 						String total = linea[9];
 						double totalPaid = Double.parseDouble(total);
+						String p1 = linea[10];
+						double penalty1 = Double.parseDouble(p1);
+						String p2 = linea[11];
+						double penalty2 = 0;
+						if(!p2.equals("")){
+							penalty2 = Double.parseDouble(p2);
+						}
+						else{
+							penalty2 = 0;
+						}
+						
 						String accidentIndicator = linea[12];
 						String issueDate = linea[13];
 						String violationCode = linea[14];
 						String violationDesc = linea[15];
-						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode,x,y));
+						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode,x,y, pamt,penalty1, penalty2));
 						totalNuevo2++;
 						contMes++;
 						if(i == 0){
@@ -252,13 +265,26 @@ public class MovingViolationsManager {
 						{
 							streetSegID="0";
 						}
+						String amt = linea[8];
+						double pamt = Integer.parseInt(amt);
 						String total = linea[9];
 						double totalPaid = Double.parseDouble(total);
+						String p1 = linea[10];
+						double penalty1 = Double.parseDouble(p1);
+						String p2 = linea[11];
+						double penalty2 = 0;
+						if(!p2.equals("")){
+							penalty2 = Double.parseDouble(p2);
+						}
+						else{
+							penalty2 = 0;
+						}
+						
 						String accidentIndicator = linea[12];
 						String issueDate = linea[13];
 						String violationCode = linea[14];
 						String violationDesc = linea[15];
-						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode,x,y));
+						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode,x,y, pamt, penalty1,penalty2));
 						totalNuevo1++;
 						contMes++;
 						if(i == 0){
@@ -646,6 +672,8 @@ public class MovingViolationsManager {
 	public IQueue<InfraccionesFechaHora> consultarFranjasAcumuladoEnRango(double valorInicial, double valorFinal)
 	{
 		IQueue<InfraccionesFechaHora> res = new Cola<>();
+		Comparable[] copia = generarMuestra(arreglo.darTamano());
+		Sort.ordenarMergeSort(copia, Comparaciones.CORD.comparador, true);
 		return res;		
 	}
 
