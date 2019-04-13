@@ -88,7 +88,8 @@ public class MovingViolationsManager {
 	private String[] sem2;
 	private Comparable<VOMovingViolations> [ ] muestra;
 	private 	RedBlackBST<String, VOMovingViolations> tree;
-	private SeparateChaining<Double, VOMovingViolations> separate;
+	private LinearProbing<Double, ArregloDinamico<VOMovingViolations>> linear;
+	private ArregloDinamico<VOMovingViolations> q;
 
 
 	/**
@@ -100,7 +101,7 @@ public class MovingViolationsManager {
 		sem1 = new String[6];
 		sem2 = new String[6];
 		tree = new  RedBlackBST<>();
-		separate=new SeparateChaining<Double, VOMovingViolations>(4);
+		linear=new LinearProbing<Double, ArregloDinamico<VOMovingViolations>>(4);
 		for(int i = 0; i<6;i++){
 			if(i == 0){
 				sem1[i] = rutaEnero;
@@ -204,7 +205,7 @@ public class MovingViolationsManager {
 						else{
 							penalty2 = 0;
 						}
-						
+
 						String accidentIndicator = linea[12];
 						String issueDate = "";
 						if(linea[13].length()<5)
@@ -216,8 +217,6 @@ public class MovingViolationsManager {
 						String violationDesc = linea[15];
 						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode,x,y,pamt,penalty1,penalty2));
 						tree.put(issueDate, new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode,x,y,pamt,penalty1,penalty2));
-						separate.put(x*y+x, new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode,x,y,pamt,penalty1,penalty2));
-
 						totalNuevo2++;
 						contMes++;
 						if(i == 0){
@@ -248,6 +247,7 @@ public class MovingViolationsManager {
 				}
 				estadistica = new EstadisticasCargaInfracciones(totalNuevo2, ju, ag, s,o ,n, d, xmin, ymin,xmax,ymax);
 			}
+			
 			else{
 				for(int i = 0;i<sem1.length;i++){
 					contMes = 0;
@@ -293,7 +293,7 @@ public class MovingViolationsManager {
 						else{
 							penalty2 = 0;
 						}
-						
+
 						String accidentIndicator = linea[12];
 						String issueDate = "";
 						if(linea[13].length()<5)
@@ -334,7 +334,34 @@ public class MovingViolationsManager {
 				}
 				estadistica = new EstadisticasCargaInfracciones(totalNuevo1, enero, f, m, a ,mayo, j, xmin, ymin,xmax,ymax);	
 			}
-
+			linear=null;
+			generarMuestra(arreglo.darTamano());
+			Comparable<VOMovingViolations>[] copia = muestra;
+			Sort.ordenarMergeSort(copia, Comparaciones.CORD.comparador, true);
+			int contador=0;
+			q = new ArregloDinamico<>(5);
+			contador++;
+			for (int k = 0; k < copia.length-1; k++) {
+				contador++;
+				VOMovingViolations actual= (VOMovingViolations) copia[k];
+				VOMovingViolations siguiente= (VOMovingViolations) copia[k+1];
+				if(actual.darX()*actual.darY()+actual.darX()==siguiente.darX()*siguiente.darY()+siguiente.darY())
+				{
+					q.agregar(actual);
+					if(contador==copia.length)
+					{
+						q.agregar(siguiente);
+						linear.put(actual.darX()*actual.darY()+actual.darX(), q);
+					}
+				}
+				else if(actual.darX()*actual.darY()+actual.darX()!=siguiente.darX()*siguiente.darY()+siguiente.darY() )
+				{
+					q.agregar(actual);
+					linear.put(actual.darX()*actual.darY()+actual.darX(), q);
+					q=null;
+					q= new ArregloDinamico<>(100);
+				}
+			}
 		}
 		catch (IOException e) {
 
@@ -547,9 +574,9 @@ public class MovingViolationsManager {
 	public InfraccionesLocalizacion consultarPorLocalizacionHash(double xCoord, double yCoord)
 	{
 		// TODO completar
-		VOMovingViolations cola = separate.get(xCoord+yCoord+xCoord);
+		//		VOMovingViolations cola = separate.get(xCoord+yCoord+xCoord);
 		return null;
-		
+
 	}
 	@SuppressWarnings("unchecked")
 	public Comparable<VOMovingViolations> [ ] generarMuestra( int n )
