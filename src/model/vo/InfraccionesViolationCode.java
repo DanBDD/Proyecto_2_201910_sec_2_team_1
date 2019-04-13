@@ -41,10 +41,22 @@ public class InfraccionesViolationCode  extends EstadisticaInfracciones implemen
 	public String getViolationCode() {
 		return violationCode;
 	}
-
+	
+	public int darTotalInfracciones(){
+		return this.listaInfracciones.size();
+	}
 	@Override
 	public int compareTo(InfraccionesViolationCode o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}	
+		int comparacion = 0;
+		if((this.totalInfracciones - o.totalInfracciones) > 0){
+			comparacion = 1;
+		}
+		else if((this.totalInfracciones - o.totalInfracciones) < 0){
+			comparacion = -1;
+		}
+		else if((this.totalInfracciones - o.totalInfracciones) == 0){
+			comparacion = 0;
+		}
+		return comparacion;	
+	}
 }

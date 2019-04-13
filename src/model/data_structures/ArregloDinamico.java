@@ -10,7 +10,7 @@ import model.vo.VOMovingViolations;
  *
  * @param <T> Objeto a guardar en ese arreglo dinamico generico
  */
-public class ArregloDinamico<T>{
+public class ArregloDinamico<T> {
 
 	private int tamanoActual;
 	
@@ -54,11 +54,6 @@ public class ArregloDinamico<T>{
 		
 		return elems[pos];
 	}
-	public void cambiarElementoEnPos(T dato, int pos)
-	{
-		
-	}
 
-	
 
 }
