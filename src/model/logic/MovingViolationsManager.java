@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.chrono.ChronoLocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -86,6 +87,8 @@ public class MovingViolationsManager {
 	private String[] sem1;
 	private String[] sem2;
 	private Comparable<VOMovingViolations> [ ] muestra;
+	private 	RedBlackBST<String, VOMovingViolations> tree;
+
 
 	/**
 	 * Metodo constructor
@@ -95,6 +98,7 @@ public class MovingViolationsManager {
 		arreglo = new ArregloDinamico<>(35000);
 		sem1 = new String[6];
 		sem2 = new String[6];
+		tree = new  RedBlackBST<>();
 		for(int i = 0; i<6;i++){
 			if(i == 0){
 				sem1[i] = rutaEnero;
@@ -187,10 +191,17 @@ public class MovingViolationsManager {
 						String total = linea[9];
 						double totalPaid = Double.parseDouble(total);
 						String accidentIndicator = linea[12];
-						String issueDate = linea[13];
+						String issueDate = "";
+						if(linea[13].length()<5)
+							issueDate = linea[14];
+						else
+							issueDate=linea[13];
+
 						String violationCode = linea[14];
 						String violationDesc = linea[15];
 						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode,x,y));
+						tree.put(issueDate, new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode,x,y));
+						
 						totalNuevo2++;
 						contMes++;
 						if(i == 0){
@@ -255,10 +266,15 @@ public class MovingViolationsManager {
 						String total = linea[9];
 						double totalPaid = Double.parseDouble(total);
 						String accidentIndicator = linea[12];
-						String issueDate = linea[13];
+						String issueDate = "";
+						if(linea[13].length()<5)
+							issueDate = linea[14];
+						else
+							issueDate=linea[13];
 						String violationCode = linea[14];
 						String violationDesc = linea[15];
 						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode,x,y));
+						tree.put(issueDate, new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode,x,y));
 						totalNuevo1++;
 						contMes++;
 						if(i == 0){
@@ -337,6 +353,7 @@ public class MovingViolationsManager {
 		for(int i=0;i<arreglo.darTamano();i++)
 		{
 			VOMovingViolations actual = arreglo.darElem(i);
+			System.out.println(actual.getTicketIssueDate().contains("T"));
 			String num =actual.getTicketIssueDate().split(":")[0].split("T")[1];
 			if(num.equals("00"))
 			{
@@ -503,7 +520,7 @@ public class MovingViolationsManager {
 	{
 		// TODO completar
 		LinearProbing<Double, InfraccionesLocalizacion> linear=new LinearProbing<>(3000);
-		Comparable[] copia = generarMuestra(arreglo.darTamano());
+		Comparable[] copia = muestra;
 		Sort.ordenarMergeSort(copia, Comparaciones.CORD.comparador, true);
 		IQueue<VOMovingViolations> cola = new Cola<>();
 		for (int i = 0; i+1 < copia.length; i++) {
@@ -516,16 +533,17 @@ public class MovingViolationsManager {
 				cola.enqueue(actual);
 				InfraccionesLocalizacion c ;
 				c=new InfraccionesLocalizacion(actual.darX(), actual.darY(),actual.getLocation(), Integer.parseInt(actual.getAddressId()), Integer.parseInt(actual.getStreetSegId()), cola);
-				linear.put(actual.darX()+actual.darY(), c);
+				linear.put(actual.darX()*actual.darY()+actual.darX(), c);
 				cola=null;
 				cola= new Cola<>();
 			}
 		}
-		return linear.get(xCoord+yCoord);		
+		return linear.get(xCoord*yCoord+xCoord);		
 	}
 	@SuppressWarnings("unchecked")
 	public Comparable<VOMovingViolations> [ ] generarMuestra( int n )
 	{
+		muestra=null;
 		muestra = new Comparable[ n ];
 		// TODO Llenar la muestra aleatoria con los datos guardados en la estructura de datos
 		ArregloDinamico<VOMovingViolations> e = arreglo;
@@ -546,27 +564,29 @@ public class MovingViolationsManager {
 	public IQueue<InfraccionesFecha> consultarInfraccionesPorRangoFechas(LocalDate fechaInicial, LocalDate fechaFinal)
 	{
 		// TODO completar
-		RedBlackBST<String, InfraccionesFecha> a = new RedBlackBST<>();
-		Comparable[] copia = generarMuestra(arreglo.darTamano());
-		Sort.ordenarMergeSort(copia, Comparaciones.DATE.comparador, true);
-		IQueue<VOMovingViolations> cola = new Cola<>();
-		for (int i = 0; i+1 < copia.length; i++) {
-			VOMovingViolations actual=(VOMovingViolations) copia[i];
-			VOMovingViolations siguiente=(VOMovingViolations) copia[i+1];
-			if(actual.getTicketIssueDate().split("T")[0].equals(siguiente.getTicketIssueDate().split("T")[0])) {
+		ArregloDinamico<VOMovingViolations> arr = tree.values(fechaInicial.toString(), fechaFinal.toString());
+		System.out.println(arr.darTamano());
+		IQueue<VOMovingViolations> cola = new Cola<VOMovingViolations>();
+		IQueue<InfraccionesFecha> retorno = new Cola<InfraccionesFecha>();
+
+		for (int i = 0; i < arr.darTamano()-1; i++) 
+		{
+			VOMovingViolations actual=arr.darElem(i);
+			VOMovingViolations siguiente=arr.darElem(i+1);
+
+			if(actual.getTicketIssueDate().split("T")[0].equals(siguiente.getTicketIssueDate().split("T")[0])) 
+			{
 				cola.enqueue(actual);
 			}
 			else
 			{
 				cola.enqueue(actual);
-				InfraccionesFecha c ;
-				c=new InfraccionesFecha(cola,ManejoFechaHora.convertirFecha_LD(actual.getTicketIssueDate().split("T")[0]));
-				a.put(actual.getTicketIssueDate(), c);
+				retorno.enqueue(new InfraccionesFecha(cola,ManejoFechaHora.convertirFecha_LD(actual.getTicketIssueDate().split("T")[0])));
 				cola=null;
 				cola= new Cola<>();
 			}
 		}
-		return a.values(fechaInicial.toString(), fechaFinal.toString());
+		return retorno;
 	}
 
 	/**
@@ -616,7 +636,28 @@ public class MovingViolationsManager {
 	public InfraccionesLocalizacion consultarPorAddressId(int addressID)
 	{
 		// TODO completar
-		return null;		
+		//TODO Completar para la invocaci�n del metodo 1C
+		LinearProbing<Integer, InfraccionesLocalizacion> linear=new LinearProbing<>(3000);
+		Comparable[] copia = muestra;
+		Sort.ordenarMergeSort(copia, Comparaciones.ADDRESSID.comparador, true);
+		IQueue<VOMovingViolations> cola = new Cola<>();
+		for (int i = 0; i+1 < copia.length; i++) {
+			VOMovingViolations actual=(VOMovingViolations) copia[i];
+			VOMovingViolations siguiente = (VOMovingViolations) copia[i+1];
+			if(actual.getAddressId().equals(siguiente.getAddressId())) {
+				cola.enqueue(actual);
+			}
+			else 
+			{
+				cola.enqueue(actual);
+				InfraccionesLocalizacion c ;
+				c=new InfraccionesLocalizacion(actual.darX(), actual.darY(),actual.getLocation(), Integer.parseInt(actual.getAddressId()), Integer.parseInt(actual.getStreetSegId()), cola);
+				linear.put(Integer.parseInt(actual.getAddressId()), c);
+				cola=null;
+				cola= new Cola<>();
+			}
+		}
+		return linear.get(addressID);		
 	}
 
 	/**
