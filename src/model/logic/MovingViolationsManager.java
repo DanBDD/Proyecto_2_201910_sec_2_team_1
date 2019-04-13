@@ -88,6 +88,7 @@ public class MovingViolationsManager {
 	private String[] sem2;
 	private Comparable<VOMovingViolations> [ ] muestra;
 	private 	RedBlackBST<String, VOMovingViolations> tree;
+	private SeparateChaining<Double, Cola<VOMovingViolations>> separate;
 
 
 	/**
@@ -99,6 +100,7 @@ public class MovingViolationsManager {
 		sem1 = new String[6];
 		sem2 = new String[6];
 		tree = new  RedBlackBST<>();
+		separate=new SeparateChaining<Double, Cola<VOMovingViolations>>(4);
 		for(int i = 0; i<6;i++){
 			if(i == 0){
 				sem1[i] = rutaEnero;
@@ -201,7 +203,7 @@ public class MovingViolationsManager {
 						String violationDesc = linea[15];
 						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode,x,y));
 						tree.put(issueDate, new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode,x,y));
-						
+						separate.put(x*y+x, new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode,x,y));
 						totalNuevo2++;
 						contMes++;
 						if(i == 0){
@@ -353,7 +355,6 @@ public class MovingViolationsManager {
 		for(int i=0;i<arreglo.darTamano();i++)
 		{
 			VOMovingViolations actual = arreglo.darElem(i);
-			System.out.println(actual.getTicketIssueDate().contains("T"));
 			String num =actual.getTicketIssueDate().split(":")[0].split("T")[1];
 			if(num.equals("00"))
 			{
@@ -519,26 +520,9 @@ public class MovingViolationsManager {
 	public InfraccionesLocalizacion consultarPorLocalizacionHash(double xCoord, double yCoord)
 	{
 		// TODO completar
-		LinearProbing<Double, InfraccionesLocalizacion> linear=new LinearProbing<>(3000);
-		Comparable[] copia = muestra;
-		Sort.ordenarMergeSort(copia, Comparaciones.CORD.comparador, true);
-		IQueue<VOMovingViolations> cola = new Cola<>();
-		for (int i = 0; i+1 < copia.length; i++) {
-			VOMovingViolations actual=(VOMovingViolations) copia[i];
-			if(actual.compareTo((VOMovingViolations) copia[i+1])== 0) {
-				cola.enqueue(actual);
-			}
-			else if(actual.compareTo((VOMovingViolations) copia[i+1])!= 0)
-			{
-				cola.enqueue(actual);
-				InfraccionesLocalizacion c ;
-				c=new InfraccionesLocalizacion(actual.darX(), actual.darY(),actual.getLocation(), Integer.parseInt(actual.getAddressId()), Integer.parseInt(actual.getStreetSegId()), cola);
-				linear.put(actual.darX()*actual.darY()+actual.darX(), c);
-				cola=null;
-				cola= new Cola<>();
-			}
-		}
-		return linear.get(xCoord*yCoord+xCoord);		
+		IQueue<VOMovingViolations> cola = separate.get(xCoord+yCoord+xCoord);
+		return null;
+		
 	}
 	@SuppressWarnings("unchecked")
 	public Comparable<VOMovingViolations> [ ] generarMuestra( int n )
