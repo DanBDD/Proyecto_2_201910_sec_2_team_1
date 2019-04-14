@@ -66,12 +66,15 @@ public class EstadisticaInfracciones {
 	public EstadisticaInfracciones(IQueue<VOMovingViolations> lista) {
 		this.listaInfracciones = lista;
 		totalInfracciones = listaInfracciones.size();	
-		//TODO Hacer el calculo de porcentajeAccidentes, porcentajeNoAccidentes y valorTotal
-		porcentajeAccidentes = getPorcentajeAccidentes();   //TODO Calcular con base en la lista
-		porcentajeNoAccidentes = getPorcentajeNoAccidentes(); //TODO Calcular con base en la lista
-		valorTotal = getValorTotal();        //TODO Calcular con base en la lista
+		       //TODO Calcular con base en la lista
+		porcentajeAccidentes = 0;   //TODO Calcular con base en la lista
+		porcentajeNoAccidentes = 0; 
 		acc=0;
 		nAcc=0;
+		//TODO Hacer el calculo de porcentajeAccidentes, porcentajeNoAccidentes y valorTotal
+		valorTotal = getValorTotal();        //TODO Calcular con base en la lista
+		porcentajeAccidentes = getPorcentajeAccidentes();   //TODO Calcular con base en la lista
+		porcentajeNoAccidentes = getPorcentajeNoAccidentes(); //TODO Calcular con base en la lista	
 	}
 
 	//=========================================================
@@ -99,7 +102,6 @@ public class EstadisticaInfracciones {
 		for(int i=0;i<totalInfracciones;i++)
 		{
 			VOMovingViolations actual=listaInfracciones.dequeue();
-			valorTotal+=actual.getTotalPaid();
 			if(actual.getAccidentIndicator().equals("Yes")){
 				acc++;
 			}
@@ -127,11 +129,13 @@ public class EstadisticaInfracciones {
 	public double getValorTotal() {
 		//TODO Completar para calcular el valor total de dinero que representan las infracciones
 		Iterator<VOMovingViolations> it = this.getListaInfracciones().iterator();
+		double total=0;
 		while(it.hasNext()){
+			System.out.println("IN");
 			VOMovingViolations actual = it.next();
-			valorTotal += actual.getTotalPaid();
+			total += actual.getAmt();
 		}
-		return valorTotal;
+		return total;
 	}	
 
 	/**

@@ -91,6 +91,10 @@ public class InfraccionesLocalizacion extends EstadisticaInfracciones {
 	public int getAdressID() {
 		return addressID;
 	}
+	
+	public void setValorTotal(double valor) {
+		this.valorTotal = valor;
+	}
 
 
 	/**

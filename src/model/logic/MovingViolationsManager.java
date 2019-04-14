@@ -353,6 +353,7 @@ public class MovingViolationsManager {
 						InfraccionesLocalizacion c ;
 						c=new InfraccionesLocalizacion(actual.darX(), actual.darY(),actual.getLocation(), actual.getAddressId(), Integer.parseInt(actual.getStreetSegId()), cola);
 						linear.put(actual.getAddressId(), c);
+						c.setValorTotal(0);
 						cola=null;
 						cola= new Cola<>();
 					}
@@ -363,6 +364,7 @@ public class MovingViolationsManager {
 					InfraccionesLocalizacion c ;
 					c=new InfraccionesLocalizacion(actual.darX(), actual.darY(),actual.getLocation(), actual.getAddressId(), Integer.parseInt(actual.getStreetSegId()), cola);
 					linear.put(actual.getAddressId(), c);
+					c.setValorTotal(0);
 					cola=null;
 					cola= new Cola<>();
 				}
@@ -591,34 +593,38 @@ public class MovingViolationsManager {
 	 */			
 	public InfraccionesLocalizacion consultarPorLocalizacionHash(double xCoord, double yCoord)
 	{
-//		Comparable<VOMovingViolations>[] copia = muestra;
-//		Sort.ordenarMergeSort(copia, Comparaciones.CORD.comparador, true);
-//		int contador=0;
-//		q = new ArregloDinamico<>(5);
-//		contador++;
-//		for (int k = 0; k < copia.length-1; k++) {
-//			contador++;
-//			VOMovingViolations actual= (VOMovingViolations) copia[k];
-//			VOMovingViolations siguiente= (VOMovingViolations) copia[k+1];
-//			if(actual.darX()*actual.darY()+actual.darX()==siguiente.darX()*siguiente.darY()+siguiente.darY())
-//			{
-//				q.agregar(actual);
-//				if(contador==copia.length)
-//				{
-//					q.agregar(siguiente);
-//					tabla.put(actual.darX()*actual.darY()+actual.darX(), q);
-//				}
-//			}
-//			else if(actual.darX()*actual.darY()+actual.darX()!=siguiente.darX()*siguiente.darY()+siguiente.darY() )
-//			{
-//				q.agregar(actual);
-//				tabla.put(actual.darX()*actual.darY()+actual.darX(), q);
-//				q=null;
-//				q= new ArregloDinamico<>(100);
-//			}
-//		}
-		return null;
-
+		Comparable<VOMovingViolations>[] copia = muestra;
+		Sort.ordenarMergeSort(copia, Comparaciones.CORD.comparador, true);
+		LinearProbing<Double, InfraccionesLocalizacion> tabla = new LinearProbing<>(100);
+		int contador=0;
+		IQueue<VOMovingViolations> q= new Cola<>();
+		contador++;
+		for (int k = 0; k < copia.length-1; k++) {
+			contador++;
+			VOMovingViolations actual= (VOMovingViolations) copia[k];
+			VOMovingViolations siguiente= (VOMovingViolations) copia[k+1];
+			if(actual.darX()*actual.darY()+actual.darX()==siguiente.darX()*siguiente.darY()+siguiente.darY())
+			{
+				q.enqueue(actual);
+				if(contador==copia.length)
+				{
+					q.enqueue(siguiente);
+					InfraccionesLocalizacion infra = new InfraccionesLocalizacion(actual.darX(), actual.darY(), actual.getLocation(), actual.getAddressId(), Integer.parseInt(actual.getStreetSegId()), q);
+					tabla.put(actual.darX()*actual.darY()+actual.darX(), infra);
+					q=null;
+					q= new Cola<>();
+				}
+			}
+			else if(actual.darX()*actual.darY()+actual.darX()!=siguiente.darX()*siguiente.darY()+siguiente.darY() )
+			{
+				q.enqueue(actual);
+				InfraccionesLocalizacion infra = new InfraccionesLocalizacion(actual.darX(), actual.darY(), actual.getLocation(), actual.getAddressId(), Integer.parseInt(actual.getStreetSegId()), q);
+				tabla.put(actual.darX()*actual.darY()+actual.darX(), infra);
+				q=null;
+				q= new Cola<>();
+			}
+		}
+		return tabla.get(xCoord*yCoord+xCoord);
 	}
 	@SuppressWarnings("unchecked")
 	public Comparable<VOMovingViolations> [ ] generarMuestra( int n )
