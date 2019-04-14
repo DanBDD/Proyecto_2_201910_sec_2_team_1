@@ -12,7 +12,7 @@ public class VOMovingViolations implements Comparable<VOMovingViolations> {
 	private String accidentIndicator;
 	private String violationDesc;
 	private String streetSegID;
-	private String addressID;
+	private int addressID;
 	private String violationCode;
 	private double x;
 	private double y;
@@ -20,7 +20,7 @@ public class VOMovingViolations implements Comparable<VOMovingViolations> {
 	private double penalty1;
 	private double penalty2;
 	
-	public VOMovingViolations(int pObID, double totalPaid2, String pLoc, String pDate, String pAccident, String pDesc, String pstreetID, String paddID, String pCode, double x, double y, double pAmt, double pP1, double pP2) {
+	public VOMovingViolations(int pObID, double totalPaid2, String pLoc, String pDate, String pAccident, String pDesc, String pstreetID, int paddID, String pCode, double x, double y, double pAmt, double pP1, double pP2) {
 		objectID = pObID;
 		totalPaid = totalPaid2;
 		location = pLoc;
@@ -113,7 +113,7 @@ public class VOMovingViolations implements Comparable<VOMovingViolations> {
 		return streetSegID;
 	}
 	
-	public String getAddressId() {
+	public int getAddressId() {
 		return addressID;
 	}
 	public double darX()
