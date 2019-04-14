@@ -619,8 +619,14 @@ public class MovingViolationsManager {
 			if(actual.getTicketIssueDate().split("T")[0].equals(siguiente.getTicketIssueDate().split("T")[0])) 
 			{
 				cola.enqueue(actual);
+				if(i+1== arr.darTamano()) {
+					cola.enqueue(siguiente);
+					retorno.enqueue(new InfraccionesFecha(cola,ManejoFechaHora.convertirFecha_LD(actual.getTicketIssueDate().split("T")[0])));
+					cola=null;
+					cola= new Cola<>();
+				}
 			}
-			else
+			else if(!(actual.getTicketIssueDate().split("T")[0].equals(siguiente.getTicketIssueDate().split("T")[0])))
 			{
 				cola.enqueue(actual);
 				retorno.enqueue(new InfraccionesFecha(cola,ManejoFechaHora.convertirFecha_LD(actual.getTicketIssueDate().split("T")[0])));
@@ -691,6 +697,14 @@ public class MovingViolationsManager {
 			VOMovingViolations actual=(VOMovingViolations) copia[i];
 			if(actual.compareTo((VOMovingViolations) copia[i+1])== 0) {
 				cola.enqueue(actual);
+				if(i+1 == copia.length) {
+					cola.enqueue((VOMovingViolations) copia[i+1]);
+					InfraccionesLocalizacion c ;
+					c=new InfraccionesLocalizacion(actual.darX(), actual.darY(),actual.getLocation(), Integer.parseInt(actual.getAddressId()), Integer.parseInt(actual.getStreetSegId()), cola);
+					arbol.put(actual.darX()+actual.darY(), c);
+					cola=null;
+					cola= new Cola<>();
+				}
 			}
 			else if(actual.compareTo((VOMovingViolations) copia[i+1])!= 0)
 			{
