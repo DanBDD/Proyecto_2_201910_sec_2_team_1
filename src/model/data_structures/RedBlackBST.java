@@ -671,6 +671,21 @@ public class RedBlackBST<K extends Comparable<K>, V> {
 		return queue;
 	} 
 
+	public IQueue<V> valuesQueue(K lo, K hi){
+		if (lo == null) throw new IllegalArgumentException("first argument to keys() is null");
+		if (hi == null) throw new IllegalArgumentException("second argument to keys() is null");
+		IQueue<V> queue = new Cola<V>();
+		valuesQueue(root, queue, lo, hi);
+		return queue;
+	}
+	private void valuesQueue(Node x, IQueue<V> cola, K lo, K hi) {
+		if (x == null) return; 
+		int cmplo = lo.compareTo(x.key); 
+		int cmphi = hi.compareTo(x.key); 
+		if (cmplo < 0) valuesQueue(x.left, cola, lo, hi); 
+		if (cmplo <= 0 && cmphi >= 0) cola.enqueue(x.val); 
+		if (cmphi > 0) valuesQueue(x.right, cola, lo, hi); 
+	}
 	// add the keys between lo and hi in the subtree rooted at x
 	// to the queue
 	private void values(Node x, ArregloDinamico<V> queue, K lo, K hi) { 

@@ -605,36 +605,41 @@ public class MovingViolationsManager {
 	 */
 	public IQueue<InfraccionesFecha> consultarInfraccionesPorRangoFechas(LocalDate fechaInicial, LocalDate fechaFinal)
 	{
-		// TODO completar
-		ArregloDinamico<VOMovingViolations> arr = tree.values(fechaInicial.toString(), fechaFinal.toString());
-		System.out.println(arr.darTamano());
-		IQueue<VOMovingViolations> cola = new Cola<VOMovingViolations>();
-		IQueue<InfraccionesFecha> retorno = new Cola<InfraccionesFecha>();
-
-		for (int i = 0; i < arr.darTamano()-1; i++) 
-		{
-			VOMovingViolations actual=arr.darElem(i);
-			VOMovingViolations siguiente=arr.darElem(i+1);
-
-			if(actual.getTicketIssueDate().split("T")[0].equals(siguiente.getTicketIssueDate().split("T")[0])) 
-			{
-				cola.enqueue(actual);
-				if(i+1== arr.darTamano()) {
-					cola.enqueue(siguiente);
-					retorno.enqueue(new InfraccionesFecha(cola,ManejoFechaHora.convertirFecha_LD(actual.getTicketIssueDate().split("T")[0])));
-					cola=null;
-					cola= new Cola<>();
+		IQueue<InfraccionesFecha> res = new Cola<>();
+		IQueue<VOMovingViolations> pre = new Cola<>();
+		RedBlackBST<ChronoLocalDate, InfraccionesFecha> arbolito = new RedBlackBST<>();
+		Comparable[] copia = muestra;
+		Sort.ordenarMergeSort(copia, Comparaciones.DATE2.comparador, true);
+		
+		for(int i=0; i<copia.length-1;i++) {
+			
+			VOMovingViolations actual = (VOMovingViolations) copia[i];
+			VOMovingViolations sig = (VOMovingViolations) copia[i+1];
+			
+			if((ManejoFechaHora.convertirFecha_LD(actual.getTicketIssueDate().split("T")[0]).compareTo(ManejoFechaHora.convertirFecha_LD(sig.getTicketIssueDate().split("T")[0]))) == 0){
+				pre.enqueue(actual);
+				if(i+1 == copia.length) {
+					pre.enqueue(sig);
+					InfraccionesFecha aja = new InfraccionesFecha(pre,ManejoFechaHora.convertirFecha_LD(actual.getTicketIssueDate().split("T")[0]));
+					arbolito.put(ManejoFechaHora.convertirFecha_LD(actual.getTicketIssueDate().split("T")[0]), aja);
+					pre = null;
+					pre = new Cola<>();
 				}
 			}
-			else if(!(actual.getTicketIssueDate().split("T")[0].equals(siguiente.getTicketIssueDate().split("T")[0])))
-			{
-				cola.enqueue(actual);
-				retorno.enqueue(new InfraccionesFecha(cola,ManejoFechaHora.convertirFecha_LD(actual.getTicketIssueDate().split("T")[0])));
-				cola=null;
-				cola= new Cola<>();
+			else if((ManejoFechaHora.convertirFecha_LD(actual.getTicketIssueDate().split("T")[0]).compareTo(ManejoFechaHora.convertirFecha_LD(sig.getTicketIssueDate().split("T")[0]))) != 0) {
+				pre.enqueue(actual);
+				InfraccionesFecha aja = new InfraccionesFecha(pre,ManejoFechaHora.convertirFecha_LD(actual.getTicketIssueDate().split("T")[0]));
+				arbolito.put(ManejoFechaHora.convertirFecha_LD(actual.getTicketIssueDate().split("T")[0]), aja);
+				pre = null;
+				pre = new Cola<>();
 			}
+			
+			
 		}
-		return retorno;
+		res = arbolito.valuesQueue(fechaInicial, fechaFinal);
+		
+		return res;
+
 	}
 
 	/**

@@ -53,6 +53,29 @@ public enum Comparaciones implements Serializable{
 
 
 	}),
+	DATE2("Date2", new SerializableComparator<VOMovingViolations>() {
+
+		private static final long serialVersionUID = 123L;
+
+
+		//TODO Cree y complete el m�todo compare, de acuerdo a la documentaci�n.
+		@Override
+		public int compare(VOMovingViolations o1, VOMovingViolations o2) {
+			String date1 = o1.getTicketIssueDate().split("T")[0];
+			String date2 = o2.getTicketIssueDate().split("T")[0];
+			LocalDate d1=ManejoFechaHora.convertirFecha_LD(date1);
+			LocalDate d2=ManejoFechaHora.convertirFecha_LD(date2);
+			int comparacion =d1.compareTo(d2);
+			if(comparacion<0)
+				return -1;
+			else if(comparacion>0)
+				return 1;
+			else return 0;
+
+		}
+
+
+	}),
 	VIOLATIONCODE("ViolationCode", new SerializableComparator<VOMovingViolations>() {
 
 		private static final long serialVersionUID = 123L;
