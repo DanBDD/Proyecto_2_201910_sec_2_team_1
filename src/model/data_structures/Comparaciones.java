@@ -107,16 +107,28 @@ public enum Comparaciones implements Serializable{
 		@Override
 		public int compare(VOMovingViolations o1, VOMovingViolations o2) {
 			int comp = 0;
-			LocalDate dt1 = ManejoFechaHora.convertirFechaHoraLLave(o1.getTicketIssueDate());
-			LocalDate dt2 = ManejoFechaHora.convertirFechaHoraLLave(o2.getTicketIssueDate());
-			if(dt1.compareTo(dt2) > 0) {
+			LocalDateTime dt1 = ManejoFechaHora.convertirFecha_Hora_LDT(o1.getTicketIssueDate());
+			LocalDateTime dt2 = ManejoFechaHora.convertirFecha_Hora_LDT(o2.getTicketIssueDate());
+			String fecha1 = o1.getTicketIssueDate().split("T")[0];
+			String fecha2 = o1.getTicketIssueDate().split("T")[0];
+			LocalDate d1 = ManejoFechaHora.convertirFecha_LD(fecha1);
+			LocalDate d2 = ManejoFechaHora.convertirFecha_LD(fecha2);
+			if((d1.compareTo(d2)) == 0) {
+				if((dt1.getHour() - dt2.getHour()) > 0) {
+					comp =1;
+				}
+				else if((dt1.getHour() - dt2.getHour()) < 0) {
+					comp = -1;
+				}
+				else if((dt1.getHour() - dt2.getHour()) == 0) {
+					comp = 0;
+				}
+			}
+			else if((d1.compareTo(d2)) > 0) {
 				comp = 1;
 			}
-			else if(dt1.compareTo(dt2) < 0) {
+			else if((d1.compareTo(d2)) < 0) {
 				comp = -1;
-			}
-			else if(dt1.compareTo(dt2) == 0) {
-				comp = 0;
 			}
 			return comp;
 		}
