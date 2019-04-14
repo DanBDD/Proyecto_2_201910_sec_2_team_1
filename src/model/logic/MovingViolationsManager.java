@@ -6,7 +6,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.chrono.ChronoLocalDate;
+import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 import com.opencsv.CSVReader;
@@ -87,7 +89,7 @@ public class MovingViolationsManager {
 	private String[] sem1;
 	private String[] sem2;
 	private Comparable<VOMovingViolations> [ ] muestra;
-	private 	RedBlackBST<String, VOMovingViolations> tree;
+	private RedBlackBST<String, VOMovingViolations> tree;
 	private LinearProbing<Double, ArregloDinamico<VOMovingViolations>> linear;
 	private ArregloDinamico<VOMovingViolations> q;
 
@@ -334,7 +336,9 @@ public class MovingViolationsManager {
 				}
 				estadistica = new EstadisticasCargaInfracciones(totalNuevo1, enero, f, m, a ,mayo, j, xmin, ymin,xmax,ymax);	
 			}
-			linear=null;
+			if(linear != null) {
+				linear = new LinearProbing<Double, ArregloDinamico<VOMovingViolations>>(4);
+			}
 			generarMuestra(arreglo.darTamano());
 			Comparable<VOMovingViolations>[] copia = muestra;
 			Sort.ordenarMergeSort(copia, Comparaciones.CORD.comparador, true);
@@ -638,7 +642,7 @@ public class MovingViolationsManager {
 		IQueue<InfraccionesViolationCode> res = new Cola<>();
 		IQueue<VOMovingViolations> aux = new Cola<>();
 		MaxColaPrioridad<InfraccionesViolationCode> pre = new MaxColaPrioridad<>();
-		Comparable[] copia = generarMuestra(arreglo.darTamano());
+		Comparable[] copia = muestra;
 		Sort.ordenarMergeSort(copia, Comparaciones.VIOLATIONCODE.comparador, true);
 		for(int i = 0; i<copia.length-1; i++){
 			VOMovingViolations actual = (VOMovingViolations) copia[i];
@@ -646,6 +650,13 @@ public class MovingViolationsManager {
 
 			if(actual.getCode().equals(sig.getCode())){
 				aux.enqueue(actual);
+				if(i+1 == copia.length) {
+					aux.enqueue(sig);
+					InfraccionesViolationCode elem = new InfraccionesViolationCode(actual.getCode(), aux);
+					pre.agregar(elem);
+					aux = null;
+					aux = new Cola<>();
+				}
 			}
 			else{
 				aux.enqueue(actual);
@@ -673,7 +684,7 @@ public class MovingViolationsManager {
 	{
 
 		RedBlackBST<Double, InfraccionesLocalizacion> arbol = new RedBlackBST<Double, InfraccionesLocalizacion>();
-		Comparable[] copia = generarMuestra(arreglo.darTamano());
+		Comparable[] copia = muestra;
 		Sort.ordenarMergeSort(copia, Comparaciones.CORD.comparador, true);
 		IQueue<VOMovingViolations> cola = new Cola<>();
 		for (int i = 1; i < copia.length-1; i++) {
@@ -691,6 +702,7 @@ public class MovingViolationsManager {
 				cola= new Cola<>();
 			}
 		}
+		System.out.println(muestra.length);
 		return arbol.get(xCoord+yCoord);		
 	}
 
@@ -704,8 +716,19 @@ public class MovingViolationsManager {
 	public IQueue<InfraccionesFechaHora> consultarFranjasAcumuladoEnRango(double valorInicial, double valorFinal)
 	{
 		IQueue<InfraccionesFechaHora> res = new Cola<>();
-		Comparable[] copia = generarMuestra(arreglo.darTamano());
-		Sort.ordenarMergeSort(copia, Comparaciones.CORD.comparador, true);
+		Comparable[] copia = muestra;
+		Sort.ordenarMergeSort(copia, Comparaciones.DATETIME.comparador, true);
+		RedBlackBST<ChronoLocalDate, VOMovingViolations> ar = new RedBlackBST<>();
+		for(int i=0;i < copia.length-1;i++) {
+			LocalDate f1 = ManejoFechaHora.convertirFechaHoraLLave(((VOMovingViolations) copia[i]).getTicketIssueDate());
+			LocalDate f2 = ManejoFechaHora.convertirFechaHoraLLave(((VOMovingViolations) copia[i+1]).getTicketIssueDate());
+			if(f1.compareTo(f2) == 0) {
+				
+			}
+			else if(f1.compareTo(f2) != 0) {
+				
+			}
+		}
 		return res;		
 	}
 
