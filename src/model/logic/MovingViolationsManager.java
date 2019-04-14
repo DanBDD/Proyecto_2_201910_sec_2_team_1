@@ -89,7 +89,7 @@ public class MovingViolationsManager {
 	private String[] sem1;
 	private String[] sem2;
 	private Comparable<VOMovingViolations> [ ] muestra;
-	private RedBlackBST<String, VOMovingViolations> tree;
+	private RedBlackBST<LocalTime, InfraccionesFranjaHorariaViolationCode> tree;
 	private LinearProbing<Integer, InfraccionesLocalizacion> linear;
 	private ArregloDinamico<VOMovingViolations> q;
 
@@ -219,7 +219,7 @@ public class MovingViolationsManager {
 						String violationCode = linea[14];
 						String violationDesc = linea[15];
 						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,pAdd, violationCode,x,y,pamt,penalty1,penalty2));
-						//tree.put(issueDate, new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode,x,y,pamt,penalty1,penalty2));
+						
 						totalNuevo2++;
 						contMes++;
 						if(i == 0){
@@ -307,7 +307,6 @@ public class MovingViolationsManager {
 						String violationCode = linea[14];
 						String violationDesc = linea[15];
 						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,pAdd, violationCode,x,y,pamt,penalty1,penalty2));
-						//tree.put(issueDate, new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,address, violationCode,x,y,pamt,penalty1,penalty2));
 						totalNuevo1++;
 						contMes++;
 						if(i == 0){
@@ -368,6 +367,19 @@ public class MovingViolationsManager {
 					linear.put(actual.getAddressId(), c);
 					cola=null;
 					cola= new Cola<>();
+				}
+			}
+			Comparable[] copia2 = muestra;
+			Sort.ordenarMergeSort(copia, Comparaciones.TIME.comparador, true);
+			for(int k = 0; k<copia.length-1;k++) {
+				VOMovingViolations actual = (VOMovingViolations) copia[k];
+				VOMovingViolations sig = (VOMovingViolations) copia[k+1];
+				String pre1 = (actual.getTicketIssueDate().split("T")[1]).split("\\.")[0];
+				String pre2 = (sig.getTicketIssueDate().split("T")[1]).split("\\.")[0];
+				LocalTime t1 = ManejoFechaHora.convertirHora_LT(pre1);
+				LocalTime t2 = ManejoFechaHora.convertirHora_LT(pre2);
+				if(t1.compareTo(t2) == 0) {
+					
 				}
 			}
 		}
@@ -825,7 +837,7 @@ public class MovingViolationsManager {
 	 */
 	public InfraccionesFranjaHorariaViolationCode consultarPorRangoHoras(LocalTime horaInicial, LocalTime horaFinal)
 	{
-		// TODO completar
+		
 		return null;		
 	}
 

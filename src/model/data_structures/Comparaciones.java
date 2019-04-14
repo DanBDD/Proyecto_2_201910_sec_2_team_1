@@ -3,6 +3,7 @@ package model.data_structures;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import model.vo.VOMovingViolations;
 import model.logic.*;
@@ -115,6 +116,31 @@ public enum Comparaciones implements Serializable{
 				comp = -1;
 			}
 			else if(dt1.compareTo(dt2) == 0) {
+				comp = 0;
+			}
+			return comp;
+		}
+
+
+	}),
+	TIME("Time", new SerializableComparator<VOMovingViolations>() {
+
+		private static final long serialVersionUID = 123L;
+
+		@Override
+		public int compare(VOMovingViolations o1, VOMovingViolations o2) {
+			int comp = 0;
+			String pre1 = (o1.getTicketIssueDate().split("T")[1]).split("\\.")[0];
+			String pre2 = (o2.getTicketIssueDate().split("T")[1]).split("\\.")[0];
+			LocalTime t1 = ManejoFechaHora.convertirHora_LT(pre1);
+			LocalTime t2 = ManejoFechaHora.convertirHora_LT(pre2);
+			if(t1.compareTo(t2) < 0) {
+				comp = -1;
+			}
+			else if(t1.compareTo(t2) > 0) {
+				comp = 1;
+			}
+			else if(t1.compareTo(t2) == 0) {
 				comp = 0;
 			}
 			return comp;
