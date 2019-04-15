@@ -1,6 +1,7 @@
 package model.vo;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import model.data_structures.IQueue;
 
@@ -14,11 +15,11 @@ public class InfraccionesFechaHora extends EstadisticaInfracciones {
 				+ valorTotal + "]\n\n";
 	}
 
-	private LocalDateTime fecha_hora_inicial;
+	private LocalTime fecha_hora_inicial;
 	
-	private LocalDateTime fecha_hora_final;
+	private LocalTime fecha_hora_final;
 	
-	public InfraccionesFechaHora(LocalDateTime pFechaHoraIni, LocalDateTime pFechaHoraFin, IQueue<VOMovingViolations> lista) {
+	public InfraccionesFechaHora(LocalTime pFechaHoraIni, LocalTime pFechaHoraFin, IQueue<VOMovingViolations> lista) {
 		super(lista);
 		// TODO Auto-generated constructor stub
 		fecha_hora_inicial = pFechaHoraIni; 

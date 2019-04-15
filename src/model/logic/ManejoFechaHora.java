@@ -36,10 +36,7 @@ public class ManejoFechaHora {
 	{
 		return LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	}
-	public static LocalDate convertirFechaHoraLLave(String fecha)
-	{
-		return LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH"));
-	}
-
+	
+	
 
 }

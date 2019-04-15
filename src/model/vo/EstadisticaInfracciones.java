@@ -66,12 +66,10 @@ public class EstadisticaInfracciones {
 	public EstadisticaInfracciones(IQueue<VOMovingViolations> lista) {
 		this.listaInfracciones = lista;
 		totalInfracciones = listaInfracciones.size();	
-		       //TODO Calcular con base en la lista
 		porcentajeAccidentes = 0;   //TODO Calcular con base en la lista
 		porcentajeNoAccidentes = 0; 
 		acc=0;
 		nAcc=0;
-		//TODO Hacer el calculo de porcentajeAccidentes, porcentajeNoAccidentes y valorTotal
 		valorTotal = getValorTotal();        //TODO Calcular con base en la lista
 		porcentajeAccidentes = getPorcentajeAccidentes();   //TODO Calcular con base en la lista
 		porcentajeNoAccidentes = getPorcentajeNoAccidentes(); //TODO Calcular con base en la lista	

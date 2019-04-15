@@ -12,6 +12,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
+import org.hamcrest.core.SubstringMatcher;
+
 import com.opencsv.CSVReader;
 import model.data_structures.ArregloDinamico;
 import model.data_structures.Cola;
@@ -826,99 +829,47 @@ public class MovingViolationsManager {
 	 */
 	public IQueue<InfraccionesFechaHora> consultarFranjasAcumuladoEnRango(double valorInicial, double valorFinal)
 	{
-		IQueue<InfraccionesFechaHora> res = new Cola<>();
-		Comparable[] copia = muestra;
-		IQueue<VOMovingViolations> pre = new Cola<>();
-		Sort.ordenarMergeSort(copia, Comparaciones.DATETIME.comparador, true);
-		RedBlackBST<Double, InfraccionesFechaHora> arbolito = new RedBlackBST<>();
-		double deuda = 0.0;
-		for(int i = 0; i<copia.length-1;i++) {
-			VOMovingViolations actual = (VOMovingViolations) copia[i];
-			VOMovingViolations sig = (VOMovingViolations) copia[i+1];
-			LocalDateTime f1 = ManejoFechaHora.convertirFecha_Hora_LDT(actual.getTicketIssueDate());
-			LocalDateTime f2 = ManejoFechaHora.convertirFecha_Hora_LDT(sig.getTicketIssueDate());
-			String fecha1 = actual.getTicketIssueDate().split("T")[0];
-			String fecha2 = sig.getTicketIssueDate().split("T")[0];
-			LocalDate d1 = ManejoFechaHora.convertirFecha_LD(fecha1);
-			LocalDate d2 = ManejoFechaHora.convertirFecha_LD(fecha2);
-			if((d1.compareTo(d2) == 0) && ((f1.getHour() - f2.getHour()) == 0)) {
-				pre.enqueue(actual);
-				deuda+=actual.getP1() + actual.getP2() + actual.getAmt();
-				if(i+1 == copia.length) {
-					pre.enqueue(sig);
-					deuda+=actual.getAmt()+actual.getP1() + actual.getP2();
-					LocalDateTime rangoF = f1.minusMinutes(f1.getMinute());
-					rangoF = f1.minusSeconds(f1.getSecond());
-					rangoF = f1.plusMinutes(59);
-					rangoF = f1.plusSeconds(59);
-					InfraccionesFechaHora infracciones = new InfraccionesFechaHora(f1, rangoF, pre);
-					arbolito.put(deuda, infracciones);
-					pre = null;
-					pre = new Cola<>();
-					deuda = 0.0;
-				}
+		SeparateChaining<String, IQueue<VOMovingViolations>> tabla = new SeparateChaining<>(1000);
+		RedBlackBST<Double, InfraccionesFechaHora> arbol = new RedBlackBST<>();
+		String llave = null;
+		for(int i = 0; i< arreglo.darTamano();i++) {
+			VOMovingViolations actual = arreglo.darElem(i);
+			llave = actual.getTicketIssueDate().substring(0, 13);
+			if(tabla.contains(llave)) {
+				tabla.get(llave).enqueue(actual);
 			}
-			else if((d1.compareTo(d2) != 0) && ((f1.getHour() - f2.getHour()) != 0)) {
-				pre.enqueue(actual);
-				deuda += actual.getP1() + actual.getP2() + actual.getAmt();
-				LocalDateTime rangoF = f2.minusMinutes(f2.getMinute());
-				rangoF = f2.minusSeconds(f2.getSecond());
-				rangoF = f2.plusMinutes(59);
-				rangoF = f2.plusSeconds(59);
-				InfraccionesFechaHora infracciones = new InfraccionesFechaHora(f1, rangoF, pre);
-				arbolito.put(deuda, infracciones);
-				pre = null;
-				pre = new Cola<>();
-				deuda = 0.0;
+			else {
+				Cola<VOMovingViolations> cola = new Cola<>();
+				cola.enqueue(actual);
+				tabla.put(llave, cola);
 			}
 		}
-
-		res = arbolito.valuesQueue(valorInicial, valorFinal);
-		System.out.println(res.size());
-		return res;
-		//		
-		//		return null;
-		//		IQueue<InfraccionesFechaHora> res = new Cola<>();
-		//		IQueue<VOMovingViolations> pre = new Cola<>();
-		//		RedBlackBST<LocalTime, InfraccionesFechaHora> arbolito = new RedBlackBST<>();
-		//		Comparable[] copia = muestra;
-		//		Sort.ordenarMergeSort(copia, Comparaciones.DATETIME.comparador, true);
-		//		
-		//		for(int i=0; i<copia.length-1;i++) {
-		//			
-		//			VOMovingViolations actual = (VOMovingViolations) copia[i];
-		//			VOMovingViolations sig = (VOMovingViolations) copia[i+1];
-		//			LocalDate date1 = ManejoFechaHora.convertirFechaHoraLLave(actual.getTicketIssueDate().split(":")[0]);
-		//			LocalDate date2 = ManejoFechaHora.convertirFechaHoraLLave(sig.getTicketIssueDate().split(":")[0]);
-		//			if((date1.compareTo(date2)) == 0){
-		//				pre.enqueue(actual);
-		//				if(i+1 == copia.length) {
-		//					pre.enqueue(sig);
-		//					int fechaMinuto = Integer.parseInt((actual.getTicketIssueDate().split("T")[1].split(":")[1]));
-		//					int minutoFin = (fechaMinuto - Math.abs(fechaMinuto)) +59;
-		//					int fechaSegundo = Integer.parseInt(actual.getTicketIssueDate().split("T")[1].split(":")[2]);
-		//					int segundoFin = (fechaSegundo - Math.abs(fechaSegundo)) + 59;
-		//					String rangoFin = actual.getTicketIssueDate().split("T")[1].split(":")[0] + ":" +  minutoFin + ":" + segundoFin;
-		//					InfraccionesFechaHora aja = new InfraccionesFechaHora(ManejoFechaHora.convertirFechaHoraLLave(actual.getTicketIssueDate().split("T")[1]),ManejoFechaHora.convertirFechaHoraLLave(rangoFin) , pre);
-		//					arbolito.put(date1, aja);
-		//					pre = null;
-		//					pre = new Cola<>();
-		//				}
-		//			}
-		//			else if((date1.compareTo(date2)) != 0) {
-		//				pre.enqueue(actual);
-		//				InfraccionesFechaHora aja = new InfraccionesFechaHora(pre);
-		//				arbolito.put(ManejoFechaHora.convertirFecha_LD(actual.getTicketIssueDate().split("T")[0]), aja);
-		//				pre = null;
-		//				pre = new Cola<>();
-		//			}
-		//			
-		//			
-		//		}
-		//		res = arbolito.valuesQueue(fechaInicial, fechaFinal);
-		//		
-		//		return res;
-
+		Iterator<String> it = tabla.keys().iterator();
+		String act=null;
+		IQueue<VOMovingViolations> cola = new Cola<>();
+		IQueue<VOMovingViolations> aux = new Cola<>();
+		String rangoIn = null;
+		String rangoFin = null;
+		double tot = 0.0;
+		while(it.hasNext()) {
+			
+			act = it.next();
+			cola = tabla.get(act);
+			aux = cola;
+			for(int i=0;i<aux.size();i++) {
+				VOMovingViolations actual = aux.dequeue();
+				tot += actual.getAmt() + actual.getP1()+actual.getP2();
+			}
+			rangoIn = act.substring(11, 13) + ":00:00";
+			rangoFin = act.substring(11, 13) + ":59:59";
+			System.out.println(cola.size());
+			InfraccionesFechaHora infra = new InfraccionesFechaHora(ManejoFechaHora.convertirHora_LT(rangoIn), ManejoFechaHora.convertirHora_LT(rangoFin), cola);
+			arbol.put(tot, infra);
+			
+			tot = 0;
+		}
+		
+		return arbol.valuesQueue(valorInicial, valorFinal);
 	}
 
 	/**
