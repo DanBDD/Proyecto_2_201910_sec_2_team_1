@@ -95,7 +95,7 @@ public class MovingViolationsManager {
 	private IQueue<InfraccionesLocalizacion> resReqC;
 	private IQueue<VOMovingViolations> auxReqC;
 	private MaxColaPrioridad<InfraccionesLocalizacion> preReqC;
-
+	private MaxHeapCP<InfraccionesViolationCode> resReq4C;
 	/**
 	 * Metodo constructor
 	 */
@@ -255,7 +255,7 @@ public class MovingViolationsManager {
 				}
 				estadistica = new EstadisticasCargaInfracciones(totalNuevo2, ju, ag, s,o ,n, d, xmin, ymin,xmax,ymax);
 			}
-			
+
 			else{
 				for(int i = 0;i<sem1.length;i++){
 					contMes = 0;
@@ -350,7 +350,7 @@ public class MovingViolationsManager {
 				linear = new LinearProbing<Integer, InfraccionesLocalizacion>(100);
 			}
 			generarMuestra(arreglo.darTamano());
-			
+
 			Comparable[] copia = muestra;
 			Sort.ordenarMergeSort(copia, Comparaciones.ADDRESSID.comparador, true);
 			IQueue<VOMovingViolations> cola = new Cola<>();
@@ -387,7 +387,7 @@ public class MovingViolationsManager {
 			for(int i = 0; i<copia2.length-1; i++){
 				VOMovingViolations actual = (VOMovingViolations) copia2[i];
 				VOMovingViolations sig = (VOMovingViolations) copia2[i+1];
-				
+
 				if((comp.compare(actual, sig)) == 0){
 					auxReqC.enqueue(actual);
 					if(i+1 == copia2.length) {
@@ -404,6 +404,31 @@ public class MovingViolationsManager {
 					preReqC.agregar(elem);
 					auxReqC = null;
 					auxReqC = new Cola<>();
+				}
+			}
+			resReq4C = new MaxHeapCP<>();
+			Comparable[] copia3 = muestra;
+			Sort.ordenarMergeSort(copia3, Comparaciones.VIOLATIONCODE.comparador, true);
+			IQueue<VOMovingViolations> colaReq4C = new Cola<>();
+			for(int v = 0; v<copia3.length - 1;v++) {
+				VOMovingViolations actual = (VOMovingViolations) copia3[v];
+				VOMovingViolations sig =  (VOMovingViolations) copia3[v+1];
+				if(actual.getCode().equals(sig.getCode())) {
+					colaReq4C.enqueue(actual);
+					if(v+1 == copia3.length) {
+						colaReq4C.enqueue(sig);
+						InfraccionesViolationCode infra = new InfraccionesViolationCode(actual.getCode(), colaReq4C);
+						resReq4C.agregar(infra);
+						colaReq4C = null;
+						colaReq4C = new Cola<>();
+					}
+				}
+				else if(!(actual.getCode().equals(sig.getCode()))) {
+					colaReq4C.enqueue(actual);
+					InfraccionesViolationCode infra = new InfraccionesViolationCode(actual.getCode(), colaReq4C);
+					resReq4C.agregar(infra);
+					colaReq4C = null;
+					colaReq4C = new Cola<>();
 				}
 			}
 		}
@@ -678,12 +703,12 @@ public class MovingViolationsManager {
 		RedBlackBST<ChronoLocalDate, InfraccionesFecha> arbolito = new RedBlackBST<>();
 		Comparable[] copia = muestra;
 		Sort.ordenarMergeSort(copia, Comparaciones.DATE2.comparador, true);
-		
+
 		for(int i=0; i<copia.length-1;i++) {
-			
+
 			VOMovingViolations actual = (VOMovingViolations) copia[i];
 			VOMovingViolations sig = (VOMovingViolations) copia[i+1];
-			
+
 			if((ManejoFechaHora.convertirFecha_LD(actual.getTicketIssueDate().split("T")[0]).compareTo(ManejoFechaHora.convertirFecha_LD(sig.getTicketIssueDate().split("T")[0]))) == 0){
 				pre.enqueue(actual);
 				if(i+1 == copia.length) {
@@ -701,11 +726,11 @@ public class MovingViolationsManager {
 				pre = null;
 				pre = new Cola<>();
 			}
-			
-			
+
+
 		}
 		res = arbolito.valuesQueue(fechaInicial, fechaFinal);
-		
+
 		return res;
 
 	}
@@ -847,52 +872,52 @@ public class MovingViolationsManager {
 				deuda = 0.0;
 			}
 		}
-		
+
 		res = arbolito.valuesQueue(valorInicial, valorFinal);
 		System.out.println(res.size());
 		return res;
-//		
-//		return null;
-//		IQueue<InfraccionesFechaHora> res = new Cola<>();
-//		IQueue<VOMovingViolations> pre = new Cola<>();
-//		RedBlackBST<LocalTime, InfraccionesFechaHora> arbolito = new RedBlackBST<>();
-//		Comparable[] copia = muestra;
-//		Sort.ordenarMergeSort(copia, Comparaciones.DATETIME.comparador, true);
-//		
-//		for(int i=0; i<copia.length-1;i++) {
-//			
-//			VOMovingViolations actual = (VOMovingViolations) copia[i];
-//			VOMovingViolations sig = (VOMovingViolations) copia[i+1];
-//			LocalDate date1 = ManejoFechaHora.convertirFechaHoraLLave(actual.getTicketIssueDate().split(":")[0]);
-//			LocalDate date2 = ManejoFechaHora.convertirFechaHoraLLave(sig.getTicketIssueDate().split(":")[0]);
-//			if((date1.compareTo(date2)) == 0){
-//				pre.enqueue(actual);
-//				if(i+1 == copia.length) {
-//					pre.enqueue(sig);
-//					int fechaMinuto = Integer.parseInt((actual.getTicketIssueDate().split("T")[1].split(":")[1]));
-//					int minutoFin = (fechaMinuto - Math.abs(fechaMinuto)) +59;
-//					int fechaSegundo = Integer.parseInt(actual.getTicketIssueDate().split("T")[1].split(":")[2]);
-//					int segundoFin = (fechaSegundo - Math.abs(fechaSegundo)) + 59;
-//					String rangoFin = actual.getTicketIssueDate().split("T")[1].split(":")[0] + ":" +  minutoFin + ":" + segundoFin;
-//					InfraccionesFechaHora aja = new InfraccionesFechaHora(ManejoFechaHora.convertirFechaHoraLLave(actual.getTicketIssueDate().split("T")[1]),ManejoFechaHora.convertirFechaHoraLLave(rangoFin) , pre);
-//					arbolito.put(date1, aja);
-//					pre = null;
-//					pre = new Cola<>();
-//				}
-//			}
-//			else if((date1.compareTo(date2)) != 0) {
-//				pre.enqueue(actual);
-//				InfraccionesFechaHora aja = new InfraccionesFechaHora(pre);
-//				arbolito.put(ManejoFechaHora.convertirFecha_LD(actual.getTicketIssueDate().split("T")[0]), aja);
-//				pre = null;
-//				pre = new Cola<>();
-//			}
-//			
-//			
-//		}
-//		res = arbolito.valuesQueue(fechaInicial, fechaFinal);
-//		
-//		return res;
+		//		
+		//		return null;
+		//		IQueue<InfraccionesFechaHora> res = new Cola<>();
+		//		IQueue<VOMovingViolations> pre = new Cola<>();
+		//		RedBlackBST<LocalTime, InfraccionesFechaHora> arbolito = new RedBlackBST<>();
+		//		Comparable[] copia = muestra;
+		//		Sort.ordenarMergeSort(copia, Comparaciones.DATETIME.comparador, true);
+		//		
+		//		for(int i=0; i<copia.length-1;i++) {
+		//			
+		//			VOMovingViolations actual = (VOMovingViolations) copia[i];
+		//			VOMovingViolations sig = (VOMovingViolations) copia[i+1];
+		//			LocalDate date1 = ManejoFechaHora.convertirFechaHoraLLave(actual.getTicketIssueDate().split(":")[0]);
+		//			LocalDate date2 = ManejoFechaHora.convertirFechaHoraLLave(sig.getTicketIssueDate().split(":")[0]);
+		//			if((date1.compareTo(date2)) == 0){
+		//				pre.enqueue(actual);
+		//				if(i+1 == copia.length) {
+		//					pre.enqueue(sig);
+		//					int fechaMinuto = Integer.parseInt((actual.getTicketIssueDate().split("T")[1].split(":")[1]));
+		//					int minutoFin = (fechaMinuto - Math.abs(fechaMinuto)) +59;
+		//					int fechaSegundo = Integer.parseInt(actual.getTicketIssueDate().split("T")[1].split(":")[2]);
+		//					int segundoFin = (fechaSegundo - Math.abs(fechaSegundo)) + 59;
+		//					String rangoFin = actual.getTicketIssueDate().split("T")[1].split(":")[0] + ":" +  minutoFin + ":" + segundoFin;
+		//					InfraccionesFechaHora aja = new InfraccionesFechaHora(ManejoFechaHora.convertirFechaHoraLLave(actual.getTicketIssueDate().split("T")[1]),ManejoFechaHora.convertirFechaHoraLLave(rangoFin) , pre);
+		//					arbolito.put(date1, aja);
+		//					pre = null;
+		//					pre = new Cola<>();
+		//				}
+		//			}
+		//			else if((date1.compareTo(date2)) != 0) {
+		//				pre.enqueue(actual);
+		//				InfraccionesFechaHora aja = new InfraccionesFechaHora(pre);
+		//				arbolito.put(ManejoFechaHora.convertirFecha_LD(actual.getTicketIssueDate().split("T")[0]), aja);
+		//				pre = null;
+		//				pre = new Cola<>();
+		//			}
+		//			
+		//			
+		//		}
+		//		res = arbolito.valuesQueue(fechaInicial, fechaFinal);
+		//		
+		//		return res;
 
 	}
 
@@ -903,7 +928,7 @@ public class MovingViolationsManager {
 	 */
 	public InfraccionesLocalizacion consultarPorAddressId(int addressID)
 	{
-	
+
 		return linear.get(addressID);		
 	}
 
@@ -916,20 +941,20 @@ public class MovingViolationsManager {
 	 */
 	public InfraccionesFranjaHorariaViolationCode consultarPorRangoHoras(LocalTime horaInicial, LocalTime horaFinal)
 	{
-		
+
 		IQueue<VOMovingViolations> cola = tree.valuesQueue(horaInicial, horaFinal);
 		IQueue<VOMovingViolations> parametro = cola;
 		Comparable[] aux = generarMuestra(cola.size());
 		Sort.ordenarMergeSort(aux, Comparaciones.VIOLATIONCODE.comparador, true);		
 		IQueue<VOMovingViolations> parametroEnSerio = new Cola<>();
 		IQueue<InfraccionesViolationCode> parametroALoBien = new Cola<>();
-		
+
 		for(int j = 0; j<aux.length-1;j++) {
 			VOMovingViolations actual1 = (VOMovingViolations)aux[j];
 			VOMovingViolations sig1 = (VOMovingViolations)aux[j+1];
-			
+
 			if(actual1.getCode().equals(sig1.getCode())) {
-				
+
 				parametroEnSerio.enqueue(actual1);
 				if(j+1==aux.length) {
 					parametroEnSerio.enqueue(sig1);
@@ -947,7 +972,7 @@ public class MovingViolationsManager {
 				parametroEnSerio = new Cola<>();
 			}
 		}
-		 
+
 		return new InfraccionesFranjaHorariaViolationCode(horaInicial, horaFinal, parametro, parametroALoBien);		
 	}
 
@@ -959,7 +984,7 @@ public class MovingViolationsManager {
 	 */
 	public IQueue<InfraccionesLocalizacion> rankingNLocalizaciones(int N)
 	{
-		
+
 		for(int j = 0; j<N; j++){
 			resReqC.enqueue(preReqC.delMax());
 		}
@@ -974,36 +999,6 @@ public class MovingViolationsManager {
 	 */
 	public MaxHeapCP<InfraccionesViolationCode> ordenarCodigosPorNumeroInfracciones()
 	{
-		MaxHeapCP<InfraccionesViolationCode> resReq4C = new MaxHeapCP<>();
-		Comparable[] copia3 = muestra;
-		Sort.ordenarMergeSort(copia3, Comparaciones.VIOLATIONCODE.comparador, true);
-		IQueue<VOMovingViolations> colaReq4C = new Cola<>();
-		
-		for(int v = 0; v<copia3.length - 1;v++) {
-			
-			VOMovingViolations actual = (VOMovingViolations) copia3[v];
-			VOMovingViolations sig =  (VOMovingViolations) copia3[v+1];
-			if(actual.getCode().equals(sig.getCode())) {
-				colaReq4C.enqueue(actual);
-				if(v+1 == copia3.length) {
-					colaReq4C.enqueue(sig);
-					InfraccionesViolationCode infra = new InfraccionesViolationCode(actual.getCode(), colaReq4C);
-					System.out.println(colaReq4C.size());
-					resReq4C.agregar(infra);
-					colaReq4C = null;
-					colaReq4C = new Cola<>();
-				}
-			}
-			else if(!(actual.getCode().equals(sig.getCode()))) {
-				colaReq4C.enqueue(actual);
-				InfraccionesViolationCode infra = new InfraccionesViolationCode(actual.getCode(), colaReq4C);
-				System.out.println(colaReq4C.size());
-				resReq4C.agregar(infra);
-				colaReq4C = null;
-				colaReq4C = new Cola<>();
-			}
-		}
-		
 		return resReq4C;		
 	}
 
