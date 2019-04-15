@@ -649,7 +649,7 @@ public class RedBlackBST<K extends Comparable<K>, V> {
 	 */
 	public Iterable<V> values() {
 		if (isEmpty()) return new Cola<V>();
-		return (Iterable<V>) values(min(), max());
+		return (Iterable<V>) valuesQueue(min(), max());
 	}
 
 	/**

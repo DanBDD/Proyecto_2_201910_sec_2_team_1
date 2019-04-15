@@ -8,7 +8,9 @@ import java.time.LocalTime;
 import java.time.chrono.ChronoLocalDate;
 import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import com.opencsv.CSVReader;
 import model.data_structures.ArregloDinamico;
@@ -87,10 +89,12 @@ public class MovingViolationsManager {
 	private String[] sem1;
 	private String[] sem2;
 	private Comparable<VOMovingViolations> [ ] muestra;
-	private RedBlackBST<LocalTime, InfraccionesFranjaHorariaViolationCode> tree;
+	private RedBlackBST<LocalTime, VOMovingViolations> tree;
 	private LinearProbing<Integer, InfraccionesLocalizacion> linear;
 	private ArregloDinamico<VOMovingViolations> q;
-
+	private IQueue<InfraccionesLocalizacion> resReqC;
+	private IQueue<VOMovingViolations> auxReqC;
+	private MaxColaPrioridad<InfraccionesLocalizacion> preReqC;
 
 	/**
 	 * Metodo constructor
@@ -216,8 +220,11 @@ public class MovingViolationsManager {
 
 						String violationCode = linea[14];
 						String violationDesc = linea[15];
-						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,pAdd, violationCode,x,y,pamt,penalty1,penalty2));
-						
+						VOMovingViolations vo = new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,pAdd, violationCode,x,y,pamt,penalty1,penalty2);
+						arreglo.agregar(vo);
+						String pre1 = (issueDate.split("T")[1]).split("\\.")[0];
+						LocalTime t1 = ManejoFechaHora.convertirHora_LT(pre1);
+						tree.put(t1, vo);
 						totalNuevo2++;
 						contMes++;
 						if(i == 0){
@@ -304,7 +311,11 @@ public class MovingViolationsManager {
 							issueDate=linea[13];
 						String violationCode = linea[14];
 						String violationDesc = linea[15];
-						arreglo.agregar(new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,pAdd, violationCode,x,y,pamt,penalty1,penalty2));
+						VOMovingViolations vo = new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,pAdd, violationCode,x,y,pamt,penalty1,penalty2);
+						arreglo.agregar(vo);
+						String pre1 = (issueDate.split("T")[1]).split("\\.")[0];
+						LocalTime t1 = ManejoFechaHora.convertirHora_LT(pre1);
+						tree.put(t1, vo);
 						totalNuevo1++;
 						contMes++;
 						if(i == 0){
@@ -353,7 +364,6 @@ public class MovingViolationsManager {
 						InfraccionesLocalizacion c ;
 						c=new InfraccionesLocalizacion(actual.darX(), actual.darY(),actual.getLocation(), actual.getAddressId(), Integer.parseInt(actual.getStreetSegId()), cola);
 						linear.put(actual.getAddressId(), c);
-						c.setValorTotal(0);
 						cola=null;
 						cola= new Cola<>();
 					}
@@ -364,22 +374,36 @@ public class MovingViolationsManager {
 					InfraccionesLocalizacion c ;
 					c=new InfraccionesLocalizacion(actual.darX(), actual.darY(),actual.getLocation(), actual.getAddressId(), Integer.parseInt(actual.getStreetSegId()), cola);
 					linear.put(actual.getAddressId(), c);
-					c.setValorTotal(0);
 					cola=null;
 					cola= new Cola<>();
 				}
 			}
+			resReqC = new Cola<>();
+			auxReqC = new Cola<>();
+			preReqC = new MaxColaPrioridad<>();
 			Comparable[] copia2 = muestra;
-			Sort.ordenarMergeSort(copia, Comparaciones.TIME.comparador, true);
-			for(int k = 0; k<copia.length-1;k++) {
-				VOMovingViolations actual = (VOMovingViolations) copia[k];
-				VOMovingViolations sig = (VOMovingViolations) copia[k+1];
-				String pre1 = (actual.getTicketIssueDate().split("T")[1]).split("\\.")[0];
-				String pre2 = (sig.getTicketIssueDate().split("T")[1]).split("\\.")[0];
-				LocalTime t1 = ManejoFechaHora.convertirHora_LT(pre1);
-				LocalTime t2 = ManejoFechaHora.convertirHora_LT(pre2);
-				if(t1.compareTo(t2) == 0) {
-					
+			Comparator comp = Comparaciones.CORD.comparador;
+			Sort.ordenarMergeSort(copia2, comp, true);
+			for(int i = 0; i<copia2.length-1; i++){
+				VOMovingViolations actual = (VOMovingViolations) copia2[i];
+				VOMovingViolations sig = (VOMovingViolations) copia2[i+1];
+				
+				if((comp.compare(actual, sig)) == 0){
+					auxReqC.enqueue(actual);
+					if(i+1 == copia2.length) {
+						auxReqC.enqueue(sig);
+						InfraccionesLocalizacion elem = new InfraccionesLocalizacion(actual.darX(), actual.darY(), actual.getLocation() , actual.getAddressId(), Integer.parseInt(actual.getStreetSegId()), auxReqC);
+						preReqC.agregar(elem);
+						auxReqC = null;
+						auxReqC = new Cola<>();
+					}
+				}
+				else if(comp.compare(actual, sig) != 0){
+					auxReqC.enqueue(actual);
+					InfraccionesLocalizacion elem = new InfraccionesLocalizacion(actual.darX(), actual.darY(), actual.getLocation() , actual.getAddressId(), Integer.parseInt(actual.getStreetSegId()), auxReqC);
+					preReqC.agregar(elem);
+					auxReqC = null;
+					auxReqC = new Cola<>();
 				}
 			}
 		}
@@ -885,7 +909,7 @@ public class MovingViolationsManager {
 
 	/**
 	 * Requerimiento 2C: Obtener  las infracciones  en  un  rango de
-	 * horas  [HH:MM:SS  inicial,HH:MM:SS  final]
+	 * horas  [HH:MM:SS inicial,HH:MM:SS final]
 	 * @param  LocalTime horaInicial: Hora  inicial del rango de b�squeda
 	 * 		LocalTime horaFinal: Hora final del rango de b�squeda
 	 * @return Objeto InfraccionesFranjaHorariaViolationCode
@@ -893,7 +917,38 @@ public class MovingViolationsManager {
 	public InfraccionesFranjaHorariaViolationCode consultarPorRangoHoras(LocalTime horaInicial, LocalTime horaFinal)
 	{
 		
-		return null;		
+		IQueue<VOMovingViolations> cola = tree.valuesQueue(horaInicial, horaFinal);
+		IQueue<VOMovingViolations> parametro = cola;
+		Comparable[] aux = generarMuestra(cola.size());
+		Sort.ordenarMergeSort(aux, Comparaciones.VIOLATIONCODE.comparador, true);		
+		IQueue<VOMovingViolations> parametroEnSerio = new Cola<>();
+		IQueue<InfraccionesViolationCode> parametroALoBien = new Cola<>();
+		
+		for(int j = 0; j<aux.length-1;j++) {
+			VOMovingViolations actual1 = (VOMovingViolations)aux[j];
+			VOMovingViolations sig1 = (VOMovingViolations)aux[j+1];
+			
+			if(actual1.getCode().equals(sig1.getCode())) {
+				
+				parametroEnSerio.enqueue(actual1);
+				if(j+1==aux.length) {
+					parametroEnSerio.enqueue(sig1);
+					InfraccionesViolationCode infra = new InfraccionesViolationCode(actual1.getCode(), parametroEnSerio);
+					parametroALoBien.enqueue(infra);
+					parametroEnSerio = null;
+					parametroEnSerio = new Cola<>();
+				}
+			}
+			else if(!(actual1.getCode().equals(sig1.getCode()))) {
+				parametroEnSerio.enqueue(actual1);
+				InfraccionesViolationCode infra = new InfraccionesViolationCode(actual1.getCode(), parametroEnSerio);
+				parametroALoBien.enqueue(infra);
+				parametroEnSerio = null;
+				parametroEnSerio = new Cola<>();
+			}
+		}
+		 
+		return new InfraccionesFranjaHorariaViolationCode(horaInicial, horaFinal, parametro, parametroALoBien);		
 	}
 
 	/**
@@ -904,8 +959,12 @@ public class MovingViolationsManager {
 	 */
 	public IQueue<InfraccionesLocalizacion> rankingNLocalizaciones(int N)
 	{
+		
+		for(int j = 0; j<N; j++){
+			resReqC.enqueue(preReqC.delMax());
+		}
+		return resReqC;
 		// TODO completar
-		return null;		
 	}
 
 	/**

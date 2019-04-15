@@ -131,9 +131,8 @@ public class EstadisticaInfracciones {
 		Iterator<VOMovingViolations> it = this.getListaInfracciones().iterator();
 		double total=0;
 		while(it.hasNext()){
-			System.out.println("IN");
 			VOMovingViolations actual = it.next();
-			total += actual.getAmt();
+			total += actual.getAmt() + actual.getP1() + actual.getP2();
 		}
 		return total;
 	}	

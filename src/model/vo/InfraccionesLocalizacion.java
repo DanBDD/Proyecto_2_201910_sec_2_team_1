@@ -6,7 +6,7 @@ import model.data_structures.IQueue;
  * Agrupa las infracciones por (Xcoord, Ycoord) 
  */
 
-public class InfraccionesLocalizacion extends EstadisticaInfracciones {	
+public class InfraccionesLocalizacion extends EstadisticaInfracciones implements Comparable<InfraccionesLocalizacion> {	
 
 	@Override
 	public String toString() {
@@ -92,10 +92,6 @@ public class InfraccionesLocalizacion extends EstadisticaInfracciones {
 		return addressID;
 	}
 	
-	public void setValorTotal(double valor) {
-		this.valorTotal = valor;
-	}
-
 
 	/**
 	 * Sets the adress ID.
@@ -133,6 +129,23 @@ public class InfraccionesLocalizacion extends EstadisticaInfracciones {
 	 */
 	public String getLocation() {
 		return location;
+	}
+
+
+	@Override
+	public int compareTo(InfraccionesLocalizacion c) {
+
+		int comp = 0;
+		if((this.totalInfracciones - c.totalInfracciones) > 0) {
+			comp = 1;
+		}
+		else if((this.totalInfracciones - c.totalInfracciones) < 0) {
+			comp = -1;
+		}
+		else if((this.totalInfracciones - c.totalInfracciones) ==  0) {
+			comp = 0;
+		}
+		return comp;
 	}
 
 }

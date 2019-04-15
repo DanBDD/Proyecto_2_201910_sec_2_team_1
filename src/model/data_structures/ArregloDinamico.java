@@ -1,5 +1,6 @@
 package model.data_structures;
 
+import java.util.Comparator;
 import java.util.Iterator;
 
 import model.vo.VOMovingViolations;
@@ -10,13 +11,15 @@ import model.vo.VOMovingViolations;
  *
  * @param <T> Objeto a guardar en ese arreglo dinamico generico
  */
-public class ArregloDinamico<T> {
+public class ArregloDinamico<T>  {
 
 	private int tamanoActual;
 	
 	private int tamanoArreglo;
 	
 	private T[] elems;
+	
+	private static	Comparable [] aux=null;
 	
 	public ArregloDinamico(int pTamano){
 		
@@ -54,6 +57,5 @@ public class ArregloDinamico<T> {
 		
 		return elems[pos];
 	}
-
 
 }

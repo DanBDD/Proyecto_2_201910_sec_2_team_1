@@ -139,19 +139,19 @@ public class MovingViolationsManagerView {
 			System.out.println(v.toString());
 
 			/* Detalle de las infracciones (Se requiere SOLO en caso de validacion)*/
-			/*
+			
 			for(VOMovingViolations vv: v.getListaInfracciones()) {
 				System.out.println(vv.toString());
 			}
-			*/
+			
 		}
 
 		/* Detalle de las infracciones (Se requiere SOLO en caso de validacion)*/
-		/*
+		
 		for(VOMovingViolations v: resultado.getListaInfracciones()) {
 			System.out.println(v.toString());
 		}
-		*/
+		
 	}
 	
 	
