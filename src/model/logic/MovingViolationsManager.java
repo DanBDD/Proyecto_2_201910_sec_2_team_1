@@ -862,7 +862,6 @@ public class MovingViolationsManager {
 			}
 			rangoIn = act.substring(11, 13) + ":00:00";
 			rangoFin = act.substring(11, 13) + ":59:59";
-			System.out.println(cola.size());
 			InfraccionesFechaHora infra = new InfraccionesFechaHora(ManejoFechaHora.convertirHora_LT(rangoIn), ManejoFechaHora.convertirHora_LT(rangoFin), cola);
 			arbol.put(tot, infra);
 			
