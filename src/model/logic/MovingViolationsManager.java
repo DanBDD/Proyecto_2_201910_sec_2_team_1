@@ -964,7 +964,7 @@ public class MovingViolationsManager {
 			resReqC.enqueue(preReqC.delMax());
 		}
 		return resReqC;
-		// TODO completar
+
 	}
 
 	/**
@@ -974,9 +974,37 @@ public class MovingViolationsManager {
 	 */
 	public MaxHeapCP<InfraccionesViolationCode> ordenarCodigosPorNumeroInfracciones()
 	{
-		// TODO completar
-		// TODO Definir la Estructura Contenedora
-		return null;		
+		MaxHeapCP<InfraccionesViolationCode> resReq4C = new MaxHeapCP<>();
+		Comparable[] copia3 = muestra;
+		Sort.ordenarMergeSort(copia3, Comparaciones.VIOLATIONCODE.comparador, true);
+		IQueue<VOMovingViolations> colaReq4C = new Cola<>();
+		
+		for(int v = 0; v<copia3.length - 1;v++) {
+			
+			VOMovingViolations actual = (VOMovingViolations) copia3[v];
+			VOMovingViolations sig =  (VOMovingViolations) copia3[v+1];
+			if(actual.getCode().equals(sig.getCode())) {
+				colaReq4C.enqueue(actual);
+				if(v+1 == copia3.length) {
+					colaReq4C.enqueue(sig);
+					InfraccionesViolationCode infra = new InfraccionesViolationCode(actual.getCode(), colaReq4C);
+					System.out.println(colaReq4C.size());
+					resReq4C.agregar(infra);
+					colaReq4C = null;
+					colaReq4C = new Cola<>();
+				}
+			}
+			else if(!(actual.getCode().equals(sig.getCode()))) {
+				colaReq4C.enqueue(actual);
+				InfraccionesViolationCode infra = new InfraccionesViolationCode(actual.getCode(), colaReq4C);
+				System.out.println(colaReq4C.size());
+				resReq4C.agregar(infra);
+				colaReq4C = null;
+				colaReq4C = new Cola<>();
+			}
+		}
+		
+		return resReq4C;		
 	}
 
 }

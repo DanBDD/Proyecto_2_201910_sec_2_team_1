@@ -169,13 +169,30 @@ public class MovingViolationsManagerView {
 	
 	
 	public void printReq4C(MaxHeapCP<InfraccionesViolationCode> resultados) {
+		System.out.println("Cantidad de infracciones por violationCode. 2018");
+		System.out.println("Codigo | TotalInfracciones");
+//
+//		for(double i=0.0; i<resultados.darNumElementos();i++){
+//			InfraccionesViolationCode ref = resultados.delMax();
+//			System.out.println(ref.getViolationCode() + "|" + ref.darTotalInfracciones());
+//		}
+//		System.out.println(" ");
+//		
+
+		for(int i =0; i<resultados.darNumElementos(); i++){
+			String x="";
+			InfraccionesViolationCode ref = resultados.delMax();
+			for(int h=0;h<ref.darTotalInfracciones();h+=10)
+			{
+				x=x+"*";
+			}
+			
+			System.out.println( ref.getViolationCode() + "|"+ x);
+		}
+
+		System.out.println("Cada X representa $1000000 USD");
 		//TODO La estructura Contenedora depende del metodo que retorna el resultado
 		//TODO Imprimir grafica ASCII con los codigos ordenados (de mayor a menor) por el total de sus infracciones 
 	}
-	
-	
-	
-	
-	
 	
 }
