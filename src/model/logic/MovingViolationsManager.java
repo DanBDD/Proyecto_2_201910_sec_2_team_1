@@ -216,13 +216,21 @@ public class MovingViolationsManager {
 
 						String accidentIndicator = linea[12];
 						String issueDate = "";
+						String violationCode ="";
+						String violationDesc = "";
 						if(linea[13].length()<5)
+						{
 							issueDate = linea[14];
+							violationCode = linea[15];
+							violationDesc = linea[16];
+						}
 						else
+						{
 							issueDate=linea[13];
+							violationCode = linea[14];
+							violationDesc = linea[15];
+						}
 
-						String violationCode = linea[14];
-						String violationDesc = linea[15];
 						VOMovingViolations vo = new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,pAdd, violationCode,x,y,pamt,penalty1,penalty2);
 						arreglo.agregar(vo);
 						String pre1 = (issueDate.split("T")[1]).split("\\.")[0];
@@ -308,12 +316,20 @@ public class MovingViolationsManager {
 
 						String accidentIndicator = linea[12];
 						String issueDate = "";
+						String violationCode ="";
+						String violationDesc = "";
 						if(linea[13].length()<5)
+						{
 							issueDate = linea[14];
+							violationCode = linea[15];
+							violationDesc = linea[16];
+						}
 						else
+						{
 							issueDate=linea[13];
-						String violationCode = linea[14];
-						String violationDesc = linea[15];
+							violationCode = linea[14];
+							violationDesc = linea[15];
+						}
 						VOMovingViolations vo = new VOMovingViolations(objectID,totalPaid, location,issueDate, accidentIndicator, violationDesc, streetSegID,pAdd, violationCode,x,y,pamt,penalty1,penalty2);
 						arreglo.agregar(vo);
 						String pre1 = (issueDate.split("T")[1]).split("\\.")[0];
@@ -441,7 +457,6 @@ public class MovingViolationsManager {
 		}
 		return estadistica;
 	}
-
 	/**
 	 * Requerimiento 1A: Obtener el ranking de las N franjas horarias
 	 * que tengan m�s infracciones. 
@@ -632,10 +647,8 @@ public class MovingViolationsManager {
 		{
 			retorno.enqueue(c.delMax());
 		}
-
 		return retorno;		
 	}
-
 	/**
 	 * Requerimiento 2A: Consultar  las  infracciones  por
 	 * Localizaci�n  Geogr�fica  (Xcoord, Ycoord) en Tabla Hash.
@@ -706,9 +719,7 @@ public class MovingViolationsManager {
 		RedBlackBST<ChronoLocalDate, InfraccionesFecha> arbolito = new RedBlackBST<>();
 		Comparable[] copia = muestra;
 		Sort.ordenarMergeSort(copia, Comparaciones.DATE2.comparador, true);
-
 		for(int i=0; i<copia.length-1;i++) {
-
 			VOMovingViolations actual = (VOMovingViolations) copia[i];
 			VOMovingViolations sig = (VOMovingViolations) copia[i+1];
 
@@ -729,15 +740,9 @@ public class MovingViolationsManager {
 				pre = null;
 				pre = new Cola<>();
 			}
-
-
 		}
-		res = arbolito.valuesQueue(fechaInicial, fechaFinal);
-
-		return res;
-
+		return arbolito.valuesQueue(fechaInicial, fechaFinal);
 	}
-
 	/**
 	 * Requerimiento 1B: Obtener  el  ranking  de  las  N  tipos  de  infracci�n
 	 * (ViolationCode)  que  tengan  m�s infracciones.
@@ -778,8 +783,6 @@ public class MovingViolationsManager {
 		}
 		return res;
 	}
-
-
 	/**
 	 * Requerimiento 2B: Consultar las  infracciones  por  
 	 * Localizaci�n  Geogr�fica  (Xcoord, Ycoord) en Arbol.
@@ -789,7 +792,6 @@ public class MovingViolationsManager {
 	 */
 	public InfraccionesLocalizacion consultarPorLocalizacionArbol(double xCoord, double yCoord)
 	{
-
 		RedBlackBST<Double, InfraccionesLocalizacion> arbol = new RedBlackBST<Double, InfraccionesLocalizacion>();
 		Comparable[] copia = muestra;
 		Sort.ordenarMergeSort(copia, Comparaciones.CORD.comparador, true);
@@ -819,7 +821,6 @@ public class MovingViolationsManager {
 		}
 		return arbol.get(xCoord+yCoord);		
 	}
-
 	/**
 	 * Requerimiento 3B: Buscar las franjas de fecha-hora donde se tiene un valor acumulado
 	 * de infracciones en un rango dado [US$ valor inicial, US$ valor final]. 
@@ -852,7 +853,7 @@ public class MovingViolationsManager {
 		String rangoFin = null;
 		double tot = 0.0;
 		while(it.hasNext()) {
-			
+
 			act = it.next();
 			cola = tabla.get(act);
 			aux = cola;
@@ -862,15 +863,25 @@ public class MovingViolationsManager {
 			}
 			rangoIn = act.substring(11, 13) + ":00:00";
 			rangoFin = act.substring(11, 13) + ":59:59";
-			InfraccionesFechaHora infra = new InfraccionesFechaHora(ManejoFechaHora.convertirHora_LT(rangoIn), ManejoFechaHora.convertirHora_LT(rangoFin), cola);
+			InfraccionesFechaHora infra = new InfraccionesFechaHora(ManejoFechaHora.convertirHora_LT(rangoIn), ManejoFechaHora.convertirHora_LT(rangoFin), cola,tot);
 			arbol.put(tot, infra);
-			
 			tot = 0;
 		}
-		
-		return arbol.valuesQueue(valorInicial, valorFinal);
+		MaxHeapCP<InfraccionesFechaHora> h= new MaxHeapCP<>();
+		IQueue<InfraccionesFechaHora> in= arbol.valuesQueue(valorInicial, valorFinal);
+		IQueue<InfraccionesFechaHora> re= new Cola<>();
+		while(in.size()>0) 
+		{
+			InfraccionesFechaHora act1= in.dequeue();
+			if(act1.t()<valorFinal && act1.t()>valorInicial)
+				h.agregar(act1);
+		}
+		while( h.darNumElementos()>0) 
+		{
+			re.enqueue(h.delMax());
+		}
+		return re;
 	}
-
 	/**
 	 * Requerimiento 1C: Obtener  la informaci�n de  una  addressId dada
 	 * @param  int addressID: Localizaci�n de la consulta.
@@ -878,10 +889,8 @@ public class MovingViolationsManager {
 	 */
 	public InfraccionesLocalizacion consultarPorAddressId(int addressID)
 	{
-
 		return linear.get(addressID);		
 	}
-
 	/**
 	 * Requerimiento 2C: Obtener  las infracciones  en  un  rango de
 	 * horas  [HH:MM:SS inicial,HH:MM:SS final]
@@ -891,14 +900,12 @@ public class MovingViolationsManager {
 	 */
 	public InfraccionesFranjaHorariaViolationCode consultarPorRangoHoras(LocalTime horaInicial, LocalTime horaFinal)
 	{
-
 		IQueue<VOMovingViolations> cola = tree.valuesQueue(horaInicial, horaFinal);
 		IQueue<VOMovingViolations> parametro = cola;
 		Comparable[] aux = generarMuestra(cola.size());
 		Sort.ordenarMergeSort(aux, Comparaciones.VIOLATIONCODE.comparador, true);		
 		IQueue<VOMovingViolations> parametroEnSerio = new Cola<>();
 		IQueue<InfraccionesViolationCode> parametroALoBien = new Cola<>();
-
 		for(int j = 0; j<aux.length-1;j++) {
 			VOMovingViolations actual1 = (VOMovingViolations)aux[j];
 			VOMovingViolations sig1 = (VOMovingViolations)aux[j+1];
@@ -922,10 +929,8 @@ public class MovingViolationsManager {
 				parametroEnSerio = new Cola<>();
 			}
 		}
-
 		return new InfraccionesFranjaHorariaViolationCode(horaInicial, horaFinal, parametro, parametroALoBien);		
 	}
-
 	/**
 	 * Requerimiento 3C: Obtener  el  ranking  de  las  N localizaciones geogr�ficas
 	 * (Xcoord,  Ycoord)  con  la mayor  cantidad  de  infracciones.
@@ -934,14 +939,12 @@ public class MovingViolationsManager {
 	 */
 	public IQueue<InfraccionesLocalizacion> rankingNLocalizaciones(int N)
 	{
-
 		for(int j = 0; j<N; j++){
 			resReqC.enqueue(preReqC.delMax());
 		}
 		return resReqC;
 
 	}
-
 	/**
 	 * Requerimiento 4C: Obtener la  informaci�n  de  los c�digos (ViolationCode) ordenados por su numero de infracciones.
 	 * @return Contenedora de objetos InfraccionesViolationCode.
@@ -951,5 +954,4 @@ public class MovingViolationsManager {
 	{
 		return resReq4C;		
 	}
-
 }
